@@ -708,3 +708,269 @@ section {
 .hero-content { z-index: 1; position: relative; }
 
 .hidden { display: none !important; }
+
+/* Thermal Mode */
+.thermal-mode {
+  --bg: #10002b !important;
+  --surface: #240046 !important;
+  --accent: #ff9e00 !important;
+  --text-main: #ff9e00 !important;
+  --text-muted: #9d4edd !important;
+  background-color: var(--bg) !important;
+  color: var(--text-main) !important;
+}
+
+.thermal-mode img, 
+.thermal-mode video {
+  filter: invert(1) hue-rotate(180deg) saturate(5) brightness(1.1) contrast(1.5) !important;
+}
+
+.thermal-mode .video-wrapper video {
+  animation: thermal-flicker 0.2s infinite alternate;
+}
+
+@keyframes thermal-flicker {
+  0% { filter: invert(1) hue-rotate(180deg) saturate(5) brightness(1.1) contrast(1.5); }
+  100% { filter: invert(1) hue-rotate(180deg) saturate(6) brightness(1.2) contrast(1.6); }
+}
+
+.scanline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.thermal-mode .scanline-overlay {
+  opacity: 0.6;
+  animation: scanline-scroll 20s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+.hud-indicator {
+  position: fixed;
+  top: 6rem;
+  left: 2rem;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  color: #00FF00;
+  z-index: 1001;
+  display: none;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.thermal-mode .hud-indicator {
+  display: block;
+}
+
+.rec-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #ff0000;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  animation: blink-rec 1s infinite;
+}
+
+@keyframes blink-rec {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.thermal-mode-toggle {
+  background: transparent;
+  border: 1px solid var(--text-main);
+  color: var(--text-main);
+  font-size: 0.6rem;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+  margin-right: 1rem;
+}
+
+.thermal-mode-toggle:hover {
+  background: var(--text-main);
+  color: var(--bg);
+}
+
+.thermal-mode-toggle.active {
+  background: #ff9e00;
+  color: #10002b;
+  box-shadow: 0 0 15px rgba(255, 158, 0, 0.5);
+  border-color: #ff9e00;
+}
+
+/* Blueprint Mode */
+.modal.blueprint {
+  background: #001d3d !important;
+  color: #00b4d8 !important;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 180, 216, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 180, 216, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.restricted-stamp {
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  border: 4px solid rgba(255, 0, 0, 0.6);
+  color: rgba(255, 0, 0, 0.6);
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  transform: rotate(-15deg);
+  z-index: 10;
+  pointer-events: none;
+  letter-spacing: 0.3em;
+  font-family: var(--font-heading);
+  user-select: none;
+}
+
+.blueprint-image {
+  filter: brightness(0.5) contrast(2) grayscale(1) invert(1) sepia(1) hue-rotate(180deg) saturate(2) !important;
+  border: 1px solid rgba(0, 180, 216, 0.3);
+}
+
+/* X-Ray Hover Effect (Thermal Mode Only) */
+.thermal-mode .product-card:hover img {
+  filter: invert(1) hue-rotate(180deg) saturate(2) brightness(1.1) contrast(1.3) !important;
+}
+
+.xray-scan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 158, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 158, 0, 0.8);
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.thermal-mode .product-card:hover .xray-scan {
+  opacity: 1;
+  animation: xray-scan-anim 2s linear infinite;
+}
+
+@keyframes xray-scan-anim {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* Live Feed HUD Overlay */
+.hud-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1002;
+  padding: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.6rem;
+  color: var(--text-main);
+  opacity: 0.4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: opacity 0.5s ease;
+}
+
+.hud-top, .hud-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.hud-metric {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: flicker-subtle 4s infinite;
+}
+
+@keyframes flicker-subtle {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 1; }
+  46% { opacity: 0.7; }
+  47% { opacity: 1; }
+  90% { opacity: 1; }
+  91% { opacity: 0.8; }
+  92% { opacity: 1; }
+}
+
+/* Exploded View Layers */
+.exploded-container {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exploded-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.1s ease-out;
+  pointer-events: none;
+}
+
+.layer-l1 {
+  opacity: 0.1;
+  filter: brightness(0.2) contrast(3) grayscale(1) invert(1) !important;
+  z-index: 1;
+}
+
+.layer-l2 {
+  opacity: 0.3;
+  filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.5) !important;
+  z-index: 2;
+}
+
+.layer-l3 {
+  opacity: 1;
+  filter: brightness(0.5) contrast(2) grayscale(1) invert(1) sepia(1) hue-rotate(180deg) saturate(2) !important;
+  z-index: 3;
+}

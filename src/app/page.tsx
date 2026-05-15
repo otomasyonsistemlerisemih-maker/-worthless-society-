@@ -20,9 +20,23 @@ export default function Home() {
   ]);
   const [unlocked, setUnlocked] = useState(false);
 
+  // Thermal Mode State
+  const [thermalMode, setThermalMode] = useState(false);
+  
+  // HUD State
+  const [sessionID, setSessionID] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  const [dataSpeed, setDataSpeed] = useState('0.0');
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   // Modal State
   const [modalActive, setModalActive] = useState(false);
   const [activeProduct, setActiveProduct] = useState<any>(null);
+  const [coords, setCoords] = useState({ x: '0.0000', y: '0.0000' });
+  
+  // Mounted State to prevent Hydration errors
+  const [mounted, setMounted] = useState(false);
+  const [signalStrength, setSignalStrength] = useState(95);
   
   // Refs
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -30,6 +44,7 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const cartCountRef = useRef(0);
@@ -57,14 +72,27 @@ export default function Home() {
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
+    // Initial HUD data
+    setMounted(true);
+    setSessionID(Math.random().toString(16).toUpperCase().substring(2, 10));
+    setSignalStrength(Math.floor(90 + Math.random() * 10));
+    
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toISOString().split('T')[1].split('.')[0] + ' UTC');
+    }, 1000);
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    lenis.on('scroll', (e: any) => {
+    lenis.on('scroll', ({ velocity, progress }: any) => {
+      // HUD Data Speed simulation
+      const speed = (Math.abs(velocity) * 15.4).toFixed(1);
+      setDataSpeed(speed);
+      setScrollProgress(progress * 100);
+
       // Apply skew effect based on scroll velocity
-      const velocity = e.velocity;
       const skewValue = velocity * 0.4; // Intensity
       
       const elements = document.querySelectorAll('.product-card, .video-wrapper');
@@ -82,6 +110,7 @@ export default function Home() {
 
     return () => {
       lenis.destroy();
+      clearInterval(timer);
     };
   }, []);
 
@@ -97,32 +126,11 @@ export default function Home() {
     masterGain.connect(audioCtx.destination);
     masterGain.gain.value = 0.5;
 
-    // Ambient Drone
-    const droneOsc = audioCtx.createOscillator();
-    droneOsc.type = 'sawtooth';
-    droneOsc.frequency.value = 40;
-
-    const droneFilter = audioCtx.createBiquadFilter();
-    droneFilter.type = 'lowpass';
-    droneFilter.frequency.value = 100;
-    
-    const droneGain = audioCtx.createGain();
-    droneGain.gain.value = 0.6;
-
-    const lfo = audioCtx.createOscillator();
-    lfo.type = 'sine';
-    lfo.frequency.value = 0.1;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 50;
-
-    lfo.connect(lfoGain);
-    lfoGain.connect(droneFilter.frequency);
-    lfo.start();
-
-    droneOsc.connect(droneFilter);
-    droneFilter.connect(droneGain);
-    droneGain.connect(masterGain);
-    droneOsc.start();
+    // Audio Analyser for reactivity
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    analyserRef.current = analyser;
+    masterGain.connect(analyser);
   };
 
   const playClick = (freq: number, duration: number) => {
@@ -246,6 +254,22 @@ export default function Home() {
       const targetX = mouseX * 0.001;
       const targetY = mouseY * 0.001;
 
+      // Audio Reactive Logic
+      if (analyserRef.current) {
+        const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+        analyserRef.current.getByteFrequencyData(dataArray);
+        
+        // Focus on low frequencies (bass) for pulse
+        const bassValue = dataArray[2] || 0; 
+        const avgValue = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+        
+        const scale = 1 + (bassValue / 255) * 0.1;
+        particlesMesh.scale.set(scale, scale, scale);
+        
+        // Subtle opacity flicker based on average volume
+        particlesMaterial.opacity = 0.15 + (avgValue / 255) * 0.4;
+      }
+
       particlesMesh.rotation.y = -elapsedTime * 0.02;
       particlesMesh.rotation.x = -elapsedTime * 0.01;
       // core.rotation.y += 0.05 * (targetX - core.rotation.y);
@@ -325,6 +349,10 @@ export default function Home() {
       return;
     }
     setActiveProduct(prod);
+    setCoords({
+      x: (Math.random() * 100).toFixed(4),
+      y: (Math.random() * 100).toFixed(4)
+    });
     setModalActive(true);
     document.body.style.overflow = 'hidden';
     playClick(150, 0.15);
@@ -352,8 +380,29 @@ export default function Home() {
   return (
     <>
       {/* Custom Cursor */}
-      <div ref={cursorRef} className="cursor" style={{ display: terminalActive ? 'none' : 'block' }}></div>
-      <div ref={followerRef} className="cursor-follower" style={{ display: terminalActive ? 'none' : 'block' }}></div>
+      <div ref={cursorRef} className="cursor" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
+      <div ref={followerRef} className="cursor-follower" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
+
+      {/* Visual Effects Overlays */}
+      <div className="scanline-overlay"></div>
+      <div className="hud-indicator">
+        <span className="rec-dot"></span>
+        REC [00:00:{Math.floor(progress/10)}] — SIGNAL: WEAK — VOID_THERMAL_SCAN
+      </div>
+
+      {/* Live Feed HUD */}
+      {mounted && (
+        <div className="hud-container">
+          <div className="hud-top">
+            <div className="hud-metric">VOID_ARCHIVE // SESSION: {sessionID}</div>
+            <div className="hud-metric">SIGNAL: {signalStrength}% // DATA_RX: {dataSpeed} KB/s</div>
+          </div>
+          <div className="hud-bottom">
+            <div className="hud-metric">LAT: 41.0082° N // LON: 28.9784° E</div>
+            <div className="hud-metric">{currentTime} // STATUS: {thermalMode ? 'SCANNING' : 'SECURE'}</div>
+          </div>
+        </div>
+      )}
 
       {/* Preloader */}
       <div id="preloader" className={!showPreloader ? 'hide' : ''} style={{ display: showPreloader ? 'flex' : 'none' }}>
@@ -394,6 +443,15 @@ export default function Home() {
           <a href="#home" className="product-title" style={{ letterSpacing: '0.2em' }}>WORTHLESS</a>
         </div>
         <nav>
+          <button 
+            className={`thermal-mode-toggle ${thermalMode ? 'active' : ''}`}
+            onClick={() => {
+              setThermalMode(!thermalMode);
+              playClick(thermalMode ? 400 : 1200, 0.1);
+            }}
+          >
+            {thermalMode ? 'THERMAL_ON' : 'THERMAL_OFF'}
+          </button>
           <a href="#shop">Shop</a>
           <a href="#archive">Archive</a>
           <a href="#manifesto">Manifesto</a>
@@ -402,7 +460,7 @@ export default function Home() {
         </nav>
       </header>
 
-      <main id="app">
+      <main id="app" className={thermalMode ? 'thermal-mode' : ''}>
         {/* Hero Section */}
         <section id="home" className="hero">
           <div className="hero-content">
@@ -418,8 +476,9 @@ export default function Home() {
             <h2 className="fade-in">THE ARCHIVE</h2>
             <div className="product-grid" id="product-list">
               {products.map((prod) => (
-                <div key={prod.id} className="product-card fade-in" onClick={() => handleProductClick(prod)} onMouseEnter={() => { followerRef.current?.classList.add('active'); playClick(800, 0.05); }} onMouseLeave={() => followerRef.current?.classList.remove('active')}>
+                <div key={prod.id} className="product-card fade-in" onClick={() => handleProductClick(prod)} onMouseEnter={() => { followerRef.current?.classList.add('active'); if (thermalMode) playClick(1200, 0.02); }} onMouseLeave={() => followerRef.current?.classList.remove('active')}>
                   <div className="product-image-container">
+                    <div className="xray-scan"></div>
                     <img src={prod.img} alt={prod.title} loading="lazy" />
                   </div>
                   <div className="product-info">
@@ -431,8 +490,9 @@ export default function Home() {
               ))}
 
               {/* Product 9 (VOID) */}
-              <div className="product-card fade-in" id="void-product" data-locked={!unlocked} onClick={handleVoidClick} onMouseEnter={() => { followerRef.current?.classList.add('active'); playClick(800, 0.05); }} onMouseLeave={() => followerRef.current?.classList.remove('active')}>
+              <div className="product-card fade-in" id="void-product" data-locked={!unlocked} onClick={handleVoidClick} onMouseEnter={() => { followerRef.current?.classList.add('active'); if (thermalMode) playClick(1200, 0.02); }} onMouseLeave={() => followerRef.current?.classList.remove('active')}>
                 <div className="product-image-container">
+                  <div className="xray-scan"></div>
                   <div style={{ width: '100%', height: '100%', background: unlocked ? 'none' : '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span className="subtext" style={{ fontSize: '0.5rem' }} id="void-image-text">{unlocked ? 'RESTRICTION LIFTED' : 'VOID_STATE'}</span>
                   </div>
@@ -503,20 +563,32 @@ export default function Home() {
       </main>
 
       {/* Product Modal */}
-      <div id="product-modal" className={`modal ${modalActive ? 'active' : ''}`}>
-        <div className="modal-close" onClick={() => { setModalActive(false); document.body.style.overflow = 'auto'; }}>BACK TO ARCHIVE</div>
+      <div id="product-modal" className={`modal ${modalActive ? 'active blueprint' : ''}`}>
+        <div className="grid-overlay"></div>
+        <div className="restricted-stamp">RESTRICTED_ARCHIVE</div>
+        <div className="modal-close" onClick={() => { setModalActive(false); document.body.style.overflow = 'auto'; }}>CLOSE_ARCHIVE_FILE</div>
         {activeProduct && (
-          <div className="product-detail-grid">
-            <img src={activeProduct.img} className="product-detail-image" alt={activeProduct.title} />
+          <div className="product-detail-grid" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ position: 'relative' }}>
+              <img src={activeProduct.img} className="product-detail-image blueprint-image" alt={activeProduct.title} />
+              <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', fontSize: '0.5rem', opacity: 0.5 }}>
+                COORD_X: {coords.x} <br />
+                COORD_Y: {coords.y}
+              </div>
+            </div>
             <div className="product-detail-info">
+              <p className="subtext" style={{ fontSize: '0.6rem', marginBottom: '1rem' }}>VOID_SPEC_SHEET // REF_{activeProduct.id}</p>
               <h2>{activeProduct.title}</h2>
-              <p>{activeProduct.fullDesc}</p>
+              <p style={{ opacity: 0.8 }}>{activeProduct.fullDesc}</p>
               <ul className="product-specs">
                 {activeProduct.specs.map((spec: any, i: number) => (
-                  <li key={i}><span>{spec[0]}</span><span>{spec[1]}</span></li>
+                  <li key={i} style={{ borderColor: 'rgba(0, 180, 216, 0.2)' }}>
+                    <span style={{ color: '#00b4d8' }}>{spec[0]}</span>
+                    <span>{spec[1]}</span>
+                  </li>
                 ))}
               </ul>
-              <button className="buy-button" onClick={acquireProduct}>ACQUIRE — {activeProduct.meta}</button>
+              <button className="buy-button" style={{ background: '#00b4d8', color: '#001d3d' }} onClick={acquireProduct}>ACQUIRE_FILE — {activeProduct.meta}</button>
             </div>
           </div>
         )}
