@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WORTHLESS | SILENT PRESSURE</title>
+
+  </head>
+  <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="preloader-content">
+        <div class="glitch-text" data-text="WORTHLESS">WORTHLESS</div>
+        <div id="loading-percentage">00%</div>
+        <button id="enter-button" style="display: none;">ENTER THE VOID</button>
+      </div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="grain"></div>
+
+    <header>
+      <div class="logo">
+        <a href="#home" class="product-title" style="letter-spacing: 0.2em;">WORTHLESS</a>
+      </div>
+      <nav>
+        <a href="#shop">Shop</a>
+        <a href="#archive">Archive</a>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#campaign">Campaign</a>
+        <a href="#cart">Cart (0)</a>
+      </nav>
+    </header>
+
+    <main id="app">
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <div class="hero-content">
+          <h1>WORTHLESS</h1>
+          <p class="subtext">SILENT PRESSURE.</p>
+        </div>
+        <div class="scroll-indicator"></div>
+      </section>
+
+      <!-- Shop Section -->
+      <section id="shop">
+        <div class="container">
+          <h2 class="fade-in">THE ARCHIVE</h2>
+          <div class="product-grid" id="product-list">
+            <!-- Product 1 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/archive_001.png" alt="ARCHIVE_001" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_001</div>
+                <div class="product-meta">€240.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">HEAVYWEIGHT HOODIE</div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/archive_002.png" alt="ARCHIVE_002" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_002</div>
+                <div class="product-meta">€85.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">VOID T-SHIRT</div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/archive_003.png" alt="SILENT_PRESSURE" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">SILENT_PRESSURE</div>
+                <div class="product-meta">ARCHIVED.</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">GARMENT DYED SWEATSHIRT</div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/28b61a06-d5db-4676-91bc-eead97c294c8.png" alt="ARCHIVE_004" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_004</div>
+                <div class="product-meta">€120.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">EXPERIMENTAL CUT</div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/6291e69b-1e82-4402-9b87-152ca115edcb.png" alt="ARCHIVE_005" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_005</div>
+                <div class="product-meta">€160.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">HEAVYWEIGHT PIECE</div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/9786ee9f-9980-46b8-84a1-af18bdf7b420.png" alt="ARCHIVE_006" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_006</div>
+                <div class="product-meta">€190.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">LIMITED EDITION</div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/WhatsApp%20Image%202026-05-14%20at%2003.23.51.jpeg" alt="ARCHIVE_007" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_007</div>
+                <div class="product-meta">€110.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">ESSENTIAL TEE</div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="product-card fade-in">
+              <div class="product-image-container">
+                <img src="./assets/WhatsApp%20Image%202026-05-14%20at%2003.26.53.jpeg" alt="ARCHIVE_008" loading="lazy" />
+              </div>
+              <div class="product-info">
+                <div class="product-title">ARCHIVE_008</div>
+                <div class="product-meta">€90.00</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;">RAW FINISH</div>
+            </div>
+
+            <!-- Product 9 (VOID) -->
+            <div class="product-card fade-in" id="void-product" data-locked="true">
+              <div class="product-image-container">
+                <div style="width: 100%; height: 100%; background: #1a1a1a; display: flex; align-items: center; justify-content: center;">
+                  <span class="subtext" style="font-size: 0.5rem;" id="void-image-text">VOID_STATE</span>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-title">VOID_STATE</div>
+                <div class="product-meta" id="void-meta">ARCHIVED.</div>
+              </div>
+              <div class="product-meta" style="margin-top: 0.5rem;" id="void-desc">RESTRICTED ACCESS</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Manifesto Section -->
+      <section id="manifesto" class="manifesto">
+        <div class="manifesto-content fade-in">
+          <p class="subtext" style="margin-bottom: 2rem;">MANIFESTO</p>
+          <h2>THE MODERN WORLD PROFITS FROM INSECURITY.</h2>
+          <p>
+            Worthless was built for the people who survived it silently. 
+            We represent the <span id="secret-trigger">invisible</span> strength of the overlooked. 
+            No glorification of weakness. 
+            Only the endurance of pressure.
+          </p>
+          <div style="margin-top: 4rem;">
+            <p class="subtext">STAY COLD.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Campaign Section -->
+      <section id="campaign" class="campaign">
+        <div class="container">
+          <h2 class="fade-in">CAMPAIGN VIDEOS</h2>
+          <div class="video-grid">
+            <div class="video-wrapper fade-in">
+              <video src="./assets/storyline_export.mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">VOID_01</div>
+            </div>
+            <div class="video-wrapper fade-in">
+              <video src="./assets/storyline_export2.mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">VOID_02</div>
+            </div>
+            <div class="video-wrapper fade-in">
+              <video src="./assets/worthless%20yelek.mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">YELEK_ARCHIVE</div>
+            </div>
+            <div class="video-wrapper fade-in">
+              <video src="./assets/absent).mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">ABSENT_STATE</div>
+            </div>
+            <div class="video-wrapper fade-in">
+              <video src="./assets/storyline_export%20grikesik.mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">GREY_CUT</div>
+            </div>
+            <div class="video-wrapper fade-in">
+              <video src="./assets/storyline_export3.mp4" autoplay loop muted playsinline></video>
+              <div class="video-overlay">VOID_04</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="product-modal" class="modal">
+      <div class="modal-close" id="modal-close">BACK TO ARCHIVE</div>
+      <div class="product-detail-grid" id="modal-content">
+        <!-- Content injected via JS -->
+      </div>
+    </div>
+
+    <!-- Terminal Modal -->
+    <div id="terminal-modal" class="terminal-overlay">
+      <div class="terminal-content">
+        <div class="terminal-header">
+          <span>ROOT@VOID_ARCHIVE:~</span>
+          <span class="terminal-close" id="terminal-close">[X]</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <p>WARNING: RESTRICTED ARCHIVE DETECTED.</p>
+          <p>PLEASE ENTER PASSCODE TO UNLOCK COMPARTMENT 009.</p>
+          <div class="terminal-input-line">
+            <span class="prompt">></span>
+            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" autofocus />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer style="padding: 4rem 2rem; text-align: center; opacity: 0.3; font-size: 0.6rem; letter-spacing: 0.2em;">
+      © 2026 WORTHLESS ARCHIVE. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
