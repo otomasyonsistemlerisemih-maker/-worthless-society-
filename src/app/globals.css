@@ -315,6 +315,33 @@ section {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+.cursor-follower.watch-active {
+  width: 90px;
+  height: 90px;
+  background-color: var(--text-main);
+  border-color: var(--text-main);
+  mix-blend-mode: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-follower.watch-active::after {
+  content: "WATCH";
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--bg);
+  opacity: 0;
+  animation: fadeInText 0.3s 0.1s ease forwards;
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 /* Animations */
 .fade-in {
   opacity: 0;
@@ -679,3 +706,5 @@ section {
 .rotating-seal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: rotateSeal 20s linear infinite; pointer-events: none; z-index: 0; }
 @keyframes rotateSeal { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 .hero-content { z-index: 1; position: relative; }
+
+.hidden { display: none !important; }

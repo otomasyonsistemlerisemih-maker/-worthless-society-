@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
+import Lenis from 'lenis';
 
 export default function Home() {
   const router = useRouter();
@@ -52,6 +53,36 @@ export default function Home() {
     }, 100);
 
     return () => clearInterval(loadInterval);
+  }, []);
+
+  // Lenis Smooth Scroll Setup
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    lenis.on('scroll', (e: any) => {
+      // Apply skew effect based on scroll velocity
+      const velocity = e.velocity;
+      const skewValue = velocity * 0.4; // Intensity
+      
+      const elements = document.querySelectorAll('.product-card, .video-wrapper');
+      elements.forEach((el) => {
+        (el as HTMLElement).style.transform = `skewY(${skewValue}deg)`;
+      });
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   const initAudio = () => {
@@ -438,29 +469,33 @@ export default function Home() {
           <div className="container">
             <h2 className="fade-in">CAMPAIGN VIDEOS</h2>
             <div className="video-grid">
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export.mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">VOID_01</div>
               </div>
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export2.mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">VOID_02</div>
               </div>
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/worthless yelek.mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">YELEK_ARCHIVE</div>
               </div>
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/absent).mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">ABSENT_STATE</div>
               </div>
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export grikesik.mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">GREY_CUT</div>
               </div>
-              <div className="video-wrapper fade-in">
+              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export3.mp4" autoPlay loop muted playsInline></video>
                 <div className="video-overlay">VOID_04</div>
+              </div>
+              <div className="video-wrapper fade-in" style={{ gridColumn: '1 / -1' }} onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+                <video src="/assets/sonvideo4.mp4" autoPlay loop muted playsInline></video>
+                <div className="video-overlay">THE_FINAL_VOID</div>
               </div>
             </div>
           </div>
