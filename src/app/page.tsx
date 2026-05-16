@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
 import Lenis from 'lenis';
+import InteractiveHUD from '@/components/InteractiveHUD';
 
 export default function Home() {
   const router = useRouter();
@@ -24,8 +25,6 @@ export default function Home() {
   const [thermalMode, setThermalMode] = useState(false);
   
   // HUD State
-  const [sessionID, setSessionID] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
   const [dataSpeed, setDataSpeed] = useState('0.0');
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -36,7 +35,6 @@ export default function Home() {
   
   // Mounted State to prevent Hydration errors
   const [mounted, setMounted] = useState(false);
-  const [signalStrength, setSignalStrength] = useState(95);
   
   // Refs
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -74,13 +72,7 @@ export default function Home() {
   useEffect(() => {
     // Initial HUD data
     setMounted(true);
-    setSessionID(Math.random().toString(16).toUpperCase().substring(2, 10));
-    setSignalStrength(Math.floor(90 + Math.random() * 10));
     
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toISOString().split('T')[1].split('.')[0] + ' UTC');
-    }, 1000);
-
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -110,7 +102,6 @@ export default function Home() {
 
     return () => {
       lenis.destroy();
-      clearInterval(timer);
     };
   }, []);
 
@@ -392,16 +383,11 @@ export default function Home() {
 
       {/* Live Feed HUD */}
       {mounted && (
-        <div className="hud-container">
-          <div className="hud-top">
-            <div className="hud-metric">VOID_ARCHIVE // SESSION: {sessionID}</div>
-            <div className="hud-metric">SIGNAL: {signalStrength}% // DATA_RX: {dataSpeed} KB/s</div>
-          </div>
-          <div className="hud-bottom">
-            <div className="hud-metric">LAT: 41.0082° N // LON: 28.9784° E</div>
-            <div className="hud-metric">{currentTime} // STATUS: {thermalMode ? 'SCANNING' : 'SECURE'}</div>
-          </div>
-        </div>
+        <InteractiveHUD 
+          thermalMode={thermalMode} 
+          scrollProgress={scrollProgress}
+          dataSpeed={dataSpeed}
+        />
       )}
 
       {/* Preloader */}
