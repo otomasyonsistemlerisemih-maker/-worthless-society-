@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
 import Lenis from 'lenis';
 import InteractiveHUD from '@/components/InteractiveHUD';
+import GlobalNetworkMap from '@/components/GlobalNetworkMap';
 
 export default function Home() {
   const router = useRouter();
@@ -441,6 +442,7 @@ export default function Home() {
           <a href="#shop">Shop</a>
           <a href="#archive">Archive</a>
           <a href="#manifesto">Manifesto</a>
+          <a href="#network">Network</a>
           <a href="#campaign">Campaign</a>
           <a href="#cart">{cartText}</a>
         </nav>
@@ -506,6 +508,19 @@ export default function Home() {
             </p>
             <div style={{ marginTop: '4rem' }}>
               <p className="subtext">STAY COLD.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Global Network Section */}
+        <section id="network" className="network-section">
+          <div className="container">
+            <div className="fade-in">
+              <p className="subtext" style={{ marginBottom: '1rem' }}>GLOBAL_VOID_NETWORK</p>
+              <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>CONNECTED AGENTS: ACTIVE</h2>
+            </div>
+            <div className="fade-in">
+              <GlobalNetworkMap thermalMode={thermalMode} />
             </div>
           </div>
         </section>
