@@ -37,6 +37,9 @@ export default function Home() {
   // Mounted State to prevent Hydration errors
   const [mounted, setMounted] = useState(false);
   
+  // Audio state
+  const [soundOn, setSoundOn] = useState(true);
+  
   // Refs
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
@@ -45,6 +48,8 @@ export default function Home() {
   const masterGainRef = useRef<GainNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const bgGainNodeRef = useRef<GainNode | null>(null);
 
   const cartCountRef = useRef(0);
   const [cartText, setCartText] = useState('Cart (0)');
@@ -107,6 +112,8 @@ export default function Home() {
   }, []);
 
   const initAudio = () => {
+    if (bgAudioRef.current) return;
+
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) return;
     
@@ -123,6 +130,27 @@ export default function Home() {
     analyser.fftSize = 256;
     analyserRef.current = analyser;
     masterGain.connect(analyser);
+
+    // Subtle background audio system
+    const bgAudio = new Audio('/audio/worthless.mp3');
+    bgAudio.loop = true;
+    bgAudio.crossOrigin = "anonymous";
+    bgAudioRef.current = bgAudio;
+
+    const source = audioCtx.createMediaElementSource(bgAudio);
+    const bgGain = audioCtx.createGain();
+    bgGainNodeRef.current = bgGain;
+
+    source.connect(bgGain);
+    bgGain.connect(masterGain);
+
+    // start at low volume, fade in slowly over 4 seconds, stay at 8% volume by default
+    bgGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    bgGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 4.0);
+
+    bgAudio.play().catch(err => {
+      console.warn("Background audio play failed:", err);
+    });
   };
 
   const playClick = (freq: number, duration: number) => {
@@ -145,6 +173,27 @@ export default function Home() {
     
     clickOsc.start();
     clickOsc.stop(audioCtx.currentTime + duration);
+  };
+
+  const toggleSound = () => {
+    const audioCtx = audioCtxRef.current;
+    const bgGain = bgGainNodeRef.current;
+
+    if (soundOn) {
+      if (audioCtx && bgGain) {
+        bgGain.gain.setValueAtTime(bgGain.gain.value, audioCtx.currentTime);
+        bgGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+        playClick(200, 0.1);
+      }
+      setSoundOn(false);
+    } else {
+      if (audioCtx && bgGain) {
+        bgGain.gain.setValueAtTime(bgGain.gain.value, audioCtx.currentTime);
+        bgGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.5);
+        playClick(400, 0.1);
+      }
+      setSoundOn(true);
+    }
   };
 
   const handleEnter = () => {
@@ -284,6 +333,14 @@ export default function Home() {
       window.removeEventListener('mousemove', onThreeMouseMove);
       cancelAnimationFrame(threeAnimId);
       window.removeEventListener('resize', onResize);
+      if (bgAudioRef.current) {
+        bgAudioRef.current.pause();
+        bgAudioRef.current = null;
+      }
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close();
+        audioCtxRef.current = null;
+      }
     };
   }, [showPreloader]);
 
@@ -396,7 +453,7 @@ export default function Home() {
         <div className="preloader-content">
           <div className="glitch-text" data-text="WORTHLESS">WORTHLESS</div>
           {!loading ? (
-            <button id="enter-button" style={{ display: 'inline-block' }} onClick={handleEnter}>ENTER THE VOID</button>
+            <button id="enter-button" style={{ display: 'inline-block' }} onClick={handleEnter}>ENTER ARCHIVE</button>
           ) : (
             <div id="loading-percentage">{progress < 10 ? `0${progress}%` : `${progress}%`}</div>
           )}
@@ -631,6 +688,18 @@ export default function Home() {
       <footer style={{ padding: '4rem 2rem', textAlign: 'center', opacity: 0.3, fontSize: '0.6rem', letterSpacing: '0.2em' }}>
         © 2026 WORTHLESS ARCHIVE. ALL RIGHTS RESERVED.
       </footer>
+
+      {/* Subtle Ambient Audio Toggle Control */}
+      {!showPreloader && (
+        <button
+          className="sound-toggle-btn"
+          onClick={toggleSound}
+          onMouseEnter={() => followerRef.current?.classList.add('active')}
+          onMouseLeave={() => followerRef.current?.classList.remove('active')}
+        >
+          SOUND: {soundOn ? 'ON' : 'OFF'}
+        </button>
+      )}
     </>
   );
 }

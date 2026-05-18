@@ -1172,3 +1172,28 @@ section {
 .corner-tag.bottom-left { bottom: -1px; left: -1px; border-right: none; border-top: none; }
 .corner-tag.bottom-right { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
+/* Subtle Ambient Audio Toggle Button */
+.sound-toggle-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1001;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--text-main);
+  opacity: 0.35;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease, letter-spacing 0.3s ease, transform 0.3s ease;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.sound-toggle-btn:hover {
+  opacity: 0.95;
+  letter-spacing: 0.3em;
+}
+
+
