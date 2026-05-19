@@ -134,7 +134,6 @@ export default function Home() {
     // Subtle background audio system
     const bgAudio = new Audio('/audio/worthless.mp3');
     bgAudio.loop = true;
-    bgAudio.crossOrigin = "anonymous";
     bgAudioRef.current = bgAudio;
 
     const source = audioCtx.createMediaElementSource(bgAudio);
@@ -144,9 +143,9 @@ export default function Home() {
     source.connect(bgGain);
     bgGain.connect(masterGain);
 
-    // start at low volume, fade in slowly over 4 seconds, stay at 8% volume by default
+    // start at low volume, fade in slowly over 4 seconds, stay at 8% volume by default (0.16 * masterGain(0.5) = 0.08 final volume)
     bgGain.gain.setValueAtTime(0, audioCtx.currentTime);
-    bgGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 4.0);
+    bgGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 4.0);
 
     bgAudio.play().catch(err => {
       console.warn("Background audio play failed:", err);
@@ -189,7 +188,7 @@ export default function Home() {
     } else {
       if (audioCtx && bgGain) {
         bgGain.gain.setValueAtTime(bgGain.gain.value, audioCtx.currentTime);
-        bgGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.5);
+        bgGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 0.5);
         playClick(400, 0.1);
       }
       setSoundOn(true);
