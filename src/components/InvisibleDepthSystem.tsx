@@ -182,23 +182,23 @@ const InvisibleDepthSystem: React.FC = () => {
 
         /* Cinematic Depth of Field focus pull on products */
         .product-grid:hover .product-card:not(:hover) {
-          filter: blur(2.5px) grayscale(0.8) brightness(0.4);
-          opacity: 0.25;
-          transform: scale(0.97) translateZ(-15px);
+          filter: blur(3.5px) grayscale(0.95) brightness(0.35);
+          opacity: 0.18;
+          transform: scale(0.96) translateZ(-20px);
         }
 
         .product-card {
-          transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                      opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                      transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          transition: filter 3.5s cubic-bezier(0.25, 1, 0.3, 1), 
+                      opacity 3.5s cubic-bezier(0.25, 1, 0.3, 1), 
+                      transform 3.5s cubic-bezier(0.25, 1, 0.3, 1) !important;
         }
 
         /* Ambient breathing on individual UI elements */
         .product-card:hover {
-          filter: blur(0px) grayscale(0) brightness(1.05);
+          filter: blur(0px) grayscale(0.25) brightness(0.95);
           opacity: 1 !important;
-          transform: scale(1.02) translateZ(10px);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+          transform: scale(1.025) translateZ(15px);
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
         }
       `}</style>
     </>
