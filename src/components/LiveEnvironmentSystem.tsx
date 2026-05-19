@@ -18,6 +18,7 @@ interface DustParticle {
 const LiveEnvironmentSystem: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const spotlightRef = useRef<HTMLDivElement | null>(null);
+  const flashlightRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Interaction coordinates
@@ -28,6 +29,7 @@ const LiveEnvironmentSystem: React.FC = () => {
 
   // Instability states (shared across loops)
   const ambientFlicker = useRef(1.0); // 1.0 = normal, dims during flickers
+  const currentDarkness = useRef(0.55); // Interpolated darkness base
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -141,15 +143,73 @@ const LiveEnvironmentSystem: React.FC = () => {
       delayMousePos.current.y += (mousePos.current.y - delayMousePos.current.y) * ease;
       delayScrollOffset.current += (scrollOffset.current - delayScrollOffset.current) * 0.05;
 
-      if (spotlightRef.current) {
-        // Sync spotlight exposure with the unstable fluorescent flicker
-        const spotOpacity = 0.92 - (ambientFlicker.current - 1.0) * 0.2;
-        spotlightRef.current.style.background = `radial-gradient(
-          circle 650px at ${delayMousePos.current.x}px ${delayMousePos.current.y}px,
-          rgba(28, 28, 28, ${0.06 * ambientFlicker.current}) 0%,
-          rgba(10, 10, 10, ${0.45 * ambientFlicker.current}) 45%,
-          rgba(3, 3, 3, ${spotOpacity}) 100%
-        )`;
+      const isMobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+
+      // Find active section based on viewport position
+      let activeSectionId = 'home';
+      const sectionsList = ['home', 'shop', 'manifesto', 'network', 'campaign'];
+      for (const id of sectionsList) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5) {
+            activeSectionId = id;
+            break;
+          }
+        }
+      }
+
+      // Section-specific darkness overlay intensity (0.0 to 1.0)
+      let targetDarkness = 0.55;
+      if (activeSectionId === 'home') targetDarkness = 0.70;
+      else if (activeSectionId === 'shop') targetDarkness = 0.42;
+      else if (activeSectionId === 'manifesto') targetDarkness = 0.28;
+      else if (activeSectionId === 'network') targetDarkness = 0.58;
+      else if (activeSectionId === 'campaign') targetDarkness = 0.58;
+
+      currentDarkness.current += (targetDarkness - currentDarkness.current) * 0.05;
+
+      if (isMobile) {
+        // Mobile behavior: soft center ambient reveal with safe visibility
+        if (spotlightRef.current) {
+          const staticDarkness = 0.45;
+          const outerVal = Math.round(255 * (1 - staticDarkness));
+          const midVal = Math.round(255 * (1 - staticDarkness * 0.4));
+          spotlightRef.current.style.background = `radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(${midVal}, ${midVal}, ${midVal}, 1) 60%,
+            rgba(${outerVal}, ${outerVal}, ${outerVal}, 1) 100%
+          )`;
+        }
+        if (flashlightRef.current) {
+          flashlightRef.current.style.background = 'none';
+        }
+      } else {
+        // Desktop behavior: smooth flashlight following mouse
+        const darkness = currentDarkness.current;
+        const outerVal = Math.round(255 * (1 - darkness));
+        const midVal = Math.round(255 * (1 - darkness * 0.4));
+
+        if (spotlightRef.current) {
+          // Multiply shadow layer with hole under cursor
+          spotlightRef.current.style.background = `radial-gradient(
+            circle 600px at ${delayMousePos.current.x}px ${delayMousePos.current.y}px,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(${midVal}, ${midVal}, ${midVal}, 1) 45%,
+            rgba(${outerVal}, ${outerVal}, ${outerVal}, ${ambientFlicker.current}) 100%
+          )`;
+        }
+
+        if (flashlightRef.current) {
+          // Soft radial screen light
+          flashlightRef.current.style.background = `radial-gradient(
+            circle 500px at ${delayMousePos.current.x}px ${delayMousePos.current.y}px,
+            rgba(255, 255, 255, ${0.14 * ambientFlicker.current}) 0%,
+            rgba(255, 255, 255, ${0.05 * ambientFlicker.current}) 45%,
+            rgba(255, 255, 255, 0) 100%
+          )`;
+        }
       }
 
       // --- SUBSYSTEM 5: Parallax Depth System ---
@@ -233,6 +293,13 @@ const LiveEnvironmentSystem: React.FC = () => {
       <div 
         ref={spotlightRef} 
         className="sluggish-spotlight" 
+        aria-hidden="true" 
+      />
+
+      {/* Soft Cursor Flashlight Reveal Layer */}
+      <div 
+        ref={flashlightRef} 
+        className="flashlight-reveal" 
         aria-hidden="true" 
       />
 
@@ -379,6 +446,19 @@ const LiveEnvironmentSystem: React.FC = () => {
           will-change: background;
         }
 
+        /* Soft Cursor Flashlight Reveal Layer */
+        .flashlight-reveal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 4; /* On top of shadow layer, below cursor */
+          mix-blend-mode: screen;
+          will-change: background;
+        }
+
         /* Dust Canvas Layer */
         .dust-canvas {
           position: fixed;
@@ -393,22 +473,29 @@ const LiveEnvironmentSystem: React.FC = () => {
 
         /* Cinematic Depth of Field Focus Breathing on Products */
         .product-grid:hover .product-card:not(:hover) {
-          filter: blur(3.5px) grayscale(0.95) brightness(0.35);
-          opacity: 0.18;
-          transform: scale(0.96) translateZ(-20px);
+          filter: blur(1.5px) grayscale(0.85) brightness(0.55);
+          opacity: 0.45;
+          transform: scale(0.98);
         }
 
         .product-card {
-          transition: filter 3.5s cubic-bezier(0.25, 1, 0.3, 1), 
-                      opacity 3.5s cubic-bezier(0.25, 1, 0.3, 1), 
-                      transform 3.5s cubic-bezier(0.25, 1, 0.3, 1) !important;
+          border: 1px solid rgba(255, 255, 255, 0.03);
+          background: rgba(10, 10, 10, 0.35);
+          padding: 0.75rem;
+          transition: filter 1.2s cubic-bezier(0.25, 1, 0.3, 1), 
+                      opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1), 
+                      transform 1.2s cubic-bezier(0.25, 1, 0.3, 1),
+                      border-color 0.8s ease,
+                      background-color 0.8s ease !important;
         }
 
         .product-card:hover {
-          filter: blur(0px) grayscale(0.25) brightness(0.95);
+          filter: blur(0px) grayscale(0.2) brightness(1.05);
           opacity: 1 !important;
-          transform: scale(1.025) translateZ(15px);
-          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
+          transform: scale(1.015) translateZ(10px);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+          border-color: rgba(255, 255, 255, 0.1);
+          background: rgba(15, 15, 15, 0.6);
         }
       `}</style>
     </div>

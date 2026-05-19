@@ -18,7 +18,7 @@ export default function Home() {
   // Terminal state
   const [terminalActive, setTerminalActive] = useState(false);
   const [terminalInput, setTerminalInput] = useState('');
-  const [terminalLines, setTerminalLines] = useState<JSX.Element[]>([
+  const [terminalLines, setTerminalLines] = useState<React.ReactNode[]>([
     <p key="1">RESTRICTED OBJECT CHAMBER 009.</p>,
     <p key="2">ARCHIVE KEY REQUIRED.</p>
   ]);

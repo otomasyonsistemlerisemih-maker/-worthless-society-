@@ -157,13 +157,15 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) brightness(0.65) blur(0.6px);
-  transition: transform 3.5s cubic-bezier(0.25, 1, 0.3, 1), filter 3.5s cubic-bezier(0.25, 1, 0.3, 1);
+  opacity: 0.88;
+  filter: grayscale(0.85) brightness(0.78) contrast(1.05) blur(0.3px);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1), filter 1.2s cubic-bezier(0.25, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
 .product-card:hover img {
   transform: scale(1.035);
-  filter: grayscale(0.25) brightness(0.95) blur(0px);
+  opacity: 1;
+  filter: grayscale(0.15) brightness(1.0) contrast(1.1) blur(0px);
 }
 
 .product-info {
