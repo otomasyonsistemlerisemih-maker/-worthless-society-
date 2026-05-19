@@ -136,6 +136,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const ctx = new AudioContextClass();
     audioCtxRef.current = ctx;
 
+    // Explicitly resume audio context to bypass browser autoplay/suspended state
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
+
     // Create Main Routing Nodes
     const masterGain = ctx.createGain();
     // Default volume: between 0.05 and 0.08. Mobile: even lower.
