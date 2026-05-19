@@ -567,7 +567,7 @@ export default function Home() {
           <a href="#archive">Archive</a>
           <a href="#manifesto">Manifesto</a>
           <a href="#network">Network</a>
-          <a href="#campaign">Campaign</a>
+          <a href="#campaign">Films</a>
           <a href="#cart">{cartText}</a>
         </nav>
       </header>
