@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useAudio } from '@/context/AudioContext';
 
 const SecretPage = () => {
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState('');
+  const { startAudio } = useAudio();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ const SecretPage = () => {
     if (res.ok) {
       setIsAuthorized(true);
       setError('');
+      startAudio(); // Start or resume global sound on interaction
     } else {
       setError('ACCESS DENIED. INCORRECT KEY.');
     }

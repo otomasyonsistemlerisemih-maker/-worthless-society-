@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LiveEnvironmentSystem from "@/components/LiveEnvironmentSystem";
+import { AudioProvider } from "@/context/AudioContext";
+import SoundToggle from "@/components/SoundToggle";
 
 export const metadata: Metadata = {
   title: "WORTHLESS | SILENT PRESSURE",
@@ -15,9 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LiveEnvironmentSystem />
-        {children}
+        <AudioProvider>
+          <LiveEnvironmentSystem />
+          {children}
+          <SoundToggle />
+        </AudioProvider>
       </body>
     </html>
   );
 }
+
