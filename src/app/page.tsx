@@ -240,21 +240,25 @@ export default function Home() {
     window.addEventListener('env-hover-resonance', handleHoverResonance);
     handleHoverResonanceRef.current = handleHoverResonance;
 
-    try {
-      const response = await fetch('/audio/worthless.mp3');
-      const arrayBuffer = await response.arrayBuffer();
-      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-      const sourceNode = audioCtx.createBufferSource();
-      sourceNode.buffer = audioBuffer;
-      sourceNode.loop = true;
-      sourceNode.connect(droneFilter);
-      
-      sourceNode.start(0);
-      bgSourceRef.current = sourceNode;
-    } catch (err) {
-      console.error("Failed to load or decode ambient background audio:", err);
+    // Procedural concrete room ventilation brown noise (replaces network MP3 asset completely)
+    const bufferSize = audioCtx.sampleRate * 2;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + (0.02 * white)) / 1.02;
+      lastOut = output[i];
+      output[i] *= 0.15; // Soft ventilation tone
     }
+
+    const sourceNode = audioCtx.createBufferSource();
+    sourceNode.buffer = noiseBuffer;
+    sourceNode.loop = true;
+    sourceNode.connect(droneFilter);
+    
+    sourceNode.start(0);
+    bgSourceRef.current = sourceNode;
   };
 
   const playClick = (freq: number, duration: number) => {
