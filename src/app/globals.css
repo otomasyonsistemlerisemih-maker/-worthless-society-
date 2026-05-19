@@ -1512,4 +1512,156 @@ section {
   letter-spacing: 0.3em;
 }
 
+/* Archive Identity Card */
+.archive-identity-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem;
+  margin-top: 2rem;
+  max-width: 480px;
+  width: 100%;
+  animation: archiveCardReveal 1.8s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes archiveCardReveal {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(12px);
+  }
+  30% {
+    opacity: 0.3;
+    filter: blur(4px);
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.archive-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.archive-card-marker {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  opacity: 0.8;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.archive-card-status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--text-main);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: archiveDotBlink 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes archiveDotBlink {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.9; }
+}
+
+.archive-card-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.archive-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.archive-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.archive-card-row.entry-status {
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.archive-card-label {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  opacity: 0.45;
+  text-transform: uppercase;
+}
+
+.archive-card-label.highlight {
+  color: var(--text-main);
+  opacity: 0.9;
+  letter-spacing: 0.25em;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.archive-card-value {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+.archive-card-value.highlight {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+}
+
+.archive-card-footer {
+  margin-top: 1rem;
+}
+
+.archive-card-msg {
+  font-family: var(--font-heading);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  opacity: 0.45;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.archive-card-copy-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+  width: auto;
+}
+
+.archive-card-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 
