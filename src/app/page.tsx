@@ -344,14 +344,118 @@ export default function Home() {
   };
 
   const products = [
-    { id: '1', title: 'ARCHIVE_001', meta: '€240.00', desc: 'HEAVYWEIGHT HOODIE', img: '/assets/archive_001.png', fullDesc: 'Heavyweight garment dyed hoodie. Built for silent endurance.', specs: [['WEIGHT', '500 GSM'], ['FIT', 'OVERSIZED'], ['PRINT', 'CRACKED SCREEN'], ['ORIGIN', 'RESTRICTED']] },
-    { id: '2', title: 'ARCHIVE_002', meta: '€85.00', desc: 'VOID T-SHIRT', img: '/assets/archive_002.png', fullDesc: 'Minimalist bone white t-shirt. Industrial distressing.', specs: [['WEIGHT', '280 GSM'], ['FIT', 'RELAXED'], ['TEXTURE', 'WASHED COTTON'], ['STATUS', 'AVAILABLE']] },
-    { id: '3', title: 'SILENT_PRESSURE', meta: 'ARCHIVED.', desc: 'GARMENT DYED SWEATSHIRT', img: '/assets/archive_003.png', fullDesc: 'Special edition garment dyed sweatshirt. A testament to the weight of existence.', specs: [['WEIGHT', '420 GSM'], ['FIT', 'BOXY'], ['DYE', 'GARMENT PIGMENT'], ['LABEL', 'VOID_ARCHIVE']] },
-    { id: '4', title: 'ARCHIVE_004', meta: '€120.00', desc: 'EXPERIMENTAL CUT', img: '/assets/28b61a06-d5db-4676-91bc-eead97c294c8.png', fullDesc: 'Experimental cut top. Designed to conceal and protect.', specs: [['WEIGHT', '320 GSM'], ['FIT', 'OVERSIZED'], ['FINISH', 'DISTRESSED'], ['STATUS', 'AVAILABLE']] },
-    { id: '5', title: 'ARCHIVE_005', meta: '€160.00', desc: 'HEAVYWEIGHT PIECE', img: '/assets/6291e69b-1e82-4402-9b87-152ca115edcb.png', fullDesc: 'Heavyweight signature piece. Cold aesthetic, warm core.', specs: [['WEIGHT', '450 GSM'], ['FIT', 'BOXY'], ['DETAIL', 'REVERSE SEAMS'], ['STATUS', 'AVAILABLE']] },
-    { id: '6', title: 'ARCHIVE_006', meta: '€190.00', desc: 'LIMITED EDITION', img: '/assets/9786ee9f-9980-46b8-84a1-af18bdf7b420.png', fullDesc: 'Limited edition outerwear. Built to withstand the pressure.', specs: [['FABRIC', 'NYLON BLEND'], ['FIT', 'RELAXED'], ['HARDWARE', 'MATTE BLACK'], ['STATUS', 'AVAILABLE']] },
-    { id: '7', title: 'ARCHIVE_007', meta: '€110.00', desc: 'ESSENTIAL TEE', img: '/assets/WhatsApp Image 2026-05-14 at 03.23.51.jpeg', fullDesc: 'Essential tee with raw edge detailing. Silent statement.', specs: [['WEIGHT', '240 GSM'], ['FIT', 'SLIM'], ['WASH', 'ACID WASH'], ['STATUS', 'AVAILABLE']] },
-    { id: '8', title: 'ARCHIVE_008', meta: '€90.00', desc: 'RAW FINISH', img: '/assets/WhatsApp Image 2026-05-14 at 03.26.53.jpeg', fullDesc: 'Raw finish garment. Represents the invisible strength.', specs: [['WEIGHT', '260 GSM'], ['FIT', 'REGULAR'], ['DYE', 'COLD PIGMENT'], ['STATUS', 'AVAILABLE']] },
+    {
+      id: '1',
+      title: 'ARCHIVE_001',
+      meta: '€240.00',
+      desc: 'PRESSURE-BUILT STRUCTURE',
+      img: '/assets/archive_001.png',
+      fullDesc: 'Pressure-built heavyweight structure. Archive wash treatment. Worn under weight.',
+      specs: [
+        ['WEIGHT', '500 GSM'],
+        ['SILHOUETTE', 'OVERSIZED PROTECTIVE'],
+        ['MARKING', 'DEGRADED SURFACE PRINT'],
+        ['ORIGIN', 'UNDISCLOSED'],
+      ]
+    },
+    {
+      id: '2',
+      title: 'ARCHIVE_002',
+      meta: '€85.00',
+      desc: 'LOW VISIBILITY UNIFORM',
+      img: '/assets/archive_002.png',
+      fullDesc: 'Low visibility base layer. Minimal surface. Degraded typography. Silent presence.',
+      specs: [
+        ['WEIGHT', '280 GSM'],
+        ['SILHOUETTE', 'RELAXED VOID'],
+        ['SURFACE', 'ARCHIVE WASH COTTON'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
+    {
+      id: '3',
+      title: 'SILENT_PRESSURE',
+      meta: 'ARCHIVED.',
+      desc: 'ARCHIVE WASH STRUCTURE',
+      img: '/assets/archive_003.png',
+      fullDesc: 'Recovered unit. Archive wash treatment. Built to absorb pressure without breaking.',
+      specs: [
+        ['WEIGHT', '420 GSM'],
+        ['SILHOUETTE', 'BOXY STRUCTURE'],
+        ['DYE', 'ARCHIVE GARMENT PIGMENT'],
+        ['CLASSIFICATION', 'RESTRICTED ARCHIVE'],
+      ]
+    },
+    {
+      id: '4',
+      title: 'ARCHIVE_004',
+      meta: '€120.00',
+      desc: 'CONCEALMENT SILHOUETTE',
+      img: '/assets/28b61a06-d5db-4676-91bc-eead97c294c8.png',
+      fullDesc: 'Concealment silhouette. Collapsed shoulder line. Constructed for low visibility.',
+      specs: [
+        ['WEIGHT', '320 GSM'],
+        ['SILHOUETTE', 'OVERSIZED PROTECTIVE'],
+        ['CONDITION', 'DEGRADED'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
+    {
+      id: '5',
+      title: 'ARCHIVE_005',
+      meta: '€160.00',
+      desc: 'SURVIVAL WEIGHT STRUCTURE',
+      img: '/assets/6291e69b-1e82-4402-9b87-152ca115edcb.png',
+      fullDesc: 'Survival weight structure. Inverted seam construction. Cold exterior, dense core.',
+      specs: [
+        ['WEIGHT', '450 GSM'],
+        ['SILHOUETTE', 'BOXY STRUCTURE'],
+        ['CONSTRUCTION', 'INVERTED SEAM'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
+    {
+      id: '6',
+      title: 'ARCHIVE_006',
+      meta: '€190.00',
+      desc: 'LIMITED ARCHIVE UNIT',
+      img: '/assets/9786ee9f-9980-46b8-84a1-af18bdf7b420.png',
+      fullDesc: 'Limited archive unit. Restricted outerwear system. Matte hardware. Pressure-rated.',
+      specs: [
+        ['FABRIC', 'NYLON BLEND'],
+        ['SILHOUETTE', 'RELAXED VOID'],
+        ['HARDWARE', 'MATTE BLACK SEALED'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
+    {
+      id: '7',
+      title: 'ARCHIVE_007',
+      meta: '€110.00',
+      desc: 'BASE LAYER UNIFORM',
+      img: '/assets/WhatsApp Image 2026-05-14 at 03.23.51.jpeg',
+      fullDesc: 'Base layer uniform. Unrefined edge condition. Acid wash treatment. No statement needed.',
+      specs: [
+        ['WEIGHT', '240 GSM'],
+        ['SILHOUETTE', 'CLOSE RESTRAINT'],
+        ['TREATMENT', 'ACID WASH DEGRADED'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
+    {
+      id: '8',
+      title: 'ARCHIVE_008',
+      meta: '€90.00',
+      desc: 'UNREFINED EDGE CONDITION',
+      img: '/assets/WhatsApp Image 2026-05-14 at 03.26.53.jpeg',
+      fullDesc: 'Unrefined edge condition. Cold pigment dye. Structural weight without declaration.',
+      specs: [
+        ['WEIGHT', '260 GSM'],
+        ['SILHOUETTE', 'STRUCTURAL REGULAR'],
+        ['DYE', 'COLD PIGMENT ARCHIVE'],
+        ['OBJECT STATUS', 'RECOVERED'],
+      ]
+    },
   ];
 
   const handleProductClick = (prod: any) => {
@@ -623,7 +727,7 @@ export default function Home() {
               </div>
             </div>
             <div className="product-detail-info">
-              <p className="subtext" style={{ fontSize: '0.6rem', marginBottom: '1rem' }}>VOID_SPEC_SHEET // REF_{activeProduct.id}</p>
+              <p className="subtext" style={{ fontSize: '0.6rem', marginBottom: '1rem' }}>OBJECT RECORD // REF_{activeProduct.id}</p>
               <h2>{activeProduct.title}</h2>
               <p style={{ opacity: 0.8 }}>{activeProduct.fullDesc}</p>
               <ul className="product-specs">
@@ -634,7 +738,7 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <button className="buy-button" style={{ background: '#00b4d8', color: '#001d3d' }} onClick={acquireProduct}>ACQUIRE_FILE — {activeProduct.meta}</button>
+              <button className="buy-button" style={{ background: '#00b4d8', color: '#001d3d' }} onClick={acquireProduct}>ACQUIRE OBJECT — {activeProduct.meta}</button>
             </div>
           </div>
         )}
