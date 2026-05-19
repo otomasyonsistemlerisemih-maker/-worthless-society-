@@ -51,6 +51,10 @@ export default function Home() {
   const bgSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const bgGainNodeRef = useRef<GainNode | null>(null);
 
+  const handleFlickerRef = useRef<any>(null);
+  const handleHoverResonanceRef = useRef<any>(null);
+  const scrollListenerRef = useRef<any>(null);
+
   const cartCountRef = useRef(0);
   const [cartText, setCartText] = useState('Cart (0)');
 
@@ -137,13 +141,104 @@ export default function Home() {
     analyserRef.current = analyser;
     masterGain.connect(analyser);
 
+    // --- SUBSYSTEM 1 & 11: Dynamic Drone Filter & Scroll Sweep ---
+    const droneFilter = audioCtx.createBiquadFilter();
+    droneFilter.type = 'lowpass';
+    droneFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+
     const bgGain = audioCtx.createGain();
     bgGainNodeRef.current = bgGain;
+    
+    // Connect Mp3 Source -> DroneFilter -> bgGain -> masterGain
+    droneFilter.connect(bgGain);
     bgGain.connect(masterGain);
 
-    // start at low volume, fade in slowly over 4 seconds, stay at 8% volume by default (0.16 * masterGain(0.5) = 0.08 final volume)
+    // start at low volume, fade in slowly over 4 seconds, stay at 16% volume by default
     bgGain.gain.setValueAtTime(0, audioCtx.currentTime);
     bgGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 4.0);
+
+    // Dynamic lowpass scroll filter binder
+    const handleScrollAudio = () => {
+      const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+      const targetFreq = 1200 - (scrollPct * 1020); // Drops from 1200Hz to 180Hz
+      droneFilter.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.15);
+    };
+    window.addEventListener('scroll', handleScrollAudio, { passive: true });
+    scrollListenerRef.current = handleScrollAudio;
+
+    // --- SUBSYSTEM 2 & 13: Synthetic Fluorescent Hum & Flicker Sync ---
+    const humOsc = audioCtx.createOscillator();
+    const buzzOsc = audioCtx.createOscillator();
+    const humGain = audioCtx.createGain();
+
+    humOsc.type = 'sine';
+    humOsc.frequency.setValueAtTime(60, audioCtx.currentTime); // Ground loop hum
+
+    buzzOsc.type = 'triangle';
+    buzzOsc.frequency.setValueAtTime(120, audioCtx.currentTime); // 120Hz copper buzz harmonics
+
+    humGain.gain.setValueAtTime(0.003, audioCtx.currentTime); // Extremely soft, cold room atmosphere
+
+    // Connect hum generator -> humGain -> masterGain
+    humOsc.connect(humGain);
+    buzzOsc.connect(humGain);
+    humGain.connect(masterGain);
+
+    humOsc.start();
+    buzzOsc.start();
+
+    // Listen to fluorescent light flicker custom event from LiveEnvironmentSystem
+    const handleFlicker = (e: any) => {
+      const intensity = e.detail.intensity; // 0 to 0.65
+      if (intensity > 0) {
+        // Crackle/Pop electrical hum
+        humGain.gain.setValueAtTime(0.003 + intensity * 0.012, audioCtx.currentTime);
+        buzzOsc.frequency.setValueAtTime(120 + Math.random() * 8, audioCtx.currentTime);
+      } else {
+        // Recover soft room hum
+        humGain.gain.setTargetAtTime(0.003, audioCtx.currentTime, 0.08);
+      }
+    };
+    window.addEventListener('env-flicker', handleFlicker);
+    handleFlickerRef.current = handleFlicker;
+
+    // --- SUBSYSTEM 5 & 11: Distant Metallic Echo Vault Resonance ---
+    const delayNode = audioCtx.createDelay(1.0);
+    delayNode.delayTime.setValueAtTime(0.6, audioCtx.currentTime);
+
+    const feedbackGain = audioCtx.createGain();
+    feedbackGain.gain.setValueAtTime(0.35, audioCtx.currentTime); // feedback loops decay naturally
+
+    const resonantFilter = audioCtx.createBiquadFilter();
+    resonantFilter.type = 'bandpass';
+    resonantFilter.frequency.setValueAtTime(1100, audioCtx.currentTime); // resonant metal frequency
+    resonantFilter.Q.setValueAtTime(15, audioCtx.currentTime); // High selectivity
+
+    // Connect echo delay loop
+    delayNode.connect(resonantFilter);
+    resonantFilter.connect(feedbackGain);
+    feedbackGain.connect(delayNode);
+    feedbackGain.connect(masterGain); // Output echo mix
+
+    // Hover product resonance generator
+    const handleHoverResonance = () => {
+      const tickOsc = audioCtx.createOscillator();
+      const tickGain = audioCtx.createGain();
+      
+      tickOsc.type = 'sine';
+      tickOsc.frequency.setValueAtTime(750 + Math.random() * 350, audioCtx.currentTime); // Resonant chime range
+      
+      tickGain.gain.setValueAtTime(0.022, audioCtx.currentTime);
+      tickGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.06);
+      
+      tickOsc.connect(tickGain);
+      tickGain.connect(delayNode); // Feed chime tick into vault reverb
+      
+      tickOsc.start();
+      tickOsc.stop(audioCtx.currentTime + 0.06);
+    };
+    window.addEventListener('env-hover-resonance', handleHoverResonance);
+    handleHoverResonanceRef.current = handleHoverResonance;
 
     try {
       const response = await fetch('/audio/worthless.mp3');
@@ -153,7 +248,7 @@ export default function Home() {
       const sourceNode = audioCtx.createBufferSource();
       sourceNode.buffer = audioBuffer;
       sourceNode.loop = true;
-      sourceNode.connect(bgGain);
+      sourceNode.connect(droneFilter);
       
       sourceNode.start(0);
       bgSourceRef.current = sourceNode;
@@ -360,6 +455,17 @@ export default function Home() {
       if (audioCtxRef.current) {
         audioCtxRef.current.close();
         audioCtxRef.current = null;
+      }
+
+      // Clean up event listeners for Web Audio API sinks
+      if (handleFlickerRef.current) {
+        window.removeEventListener('env-flicker', handleFlickerRef.current);
+      }
+      if (handleHoverResonanceRef.current) {
+        window.removeEventListener('env-hover-resonance', handleHoverResonanceRef.current);
+      }
+      if (scrollListenerRef.current) {
+        window.removeEventListener('scroll', scrollListenerRef.current);
       }
     };
   }, []);

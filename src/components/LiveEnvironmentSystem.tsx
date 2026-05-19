@@ -56,9 +56,16 @@ const LiveEnvironmentSystem: React.FC = () => {
     const handleScroll = () => {
       scrollOffset.current = window.scrollY;
     };
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.product-card')) {
+        window.dispatchEvent(new CustomEvent('env-hover-resonance'));
+      }
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver);
 
     // Initialize Dust Particles
     const initParticles = () => {
@@ -105,12 +112,22 @@ const LiveEnvironmentSystem: React.FC = () => {
       if (flickerActive) {
         if (flickerSteps > 0) {
           // Dim the light for one frame, recover on next
-          ambientFlicker.current = flickerSteps % 2 === 0 ? 0.35 : 0.95;
+          const intensity = flickerSteps % 2 === 0 ? 0.35 : 0.95;
+          ambientFlicker.current = intensity;
           flickerSteps--;
+
+          // Dispatch event to sync Web Audio Hum crackle
+          window.dispatchEvent(new CustomEvent('env-flicker', {
+            detail: { intensity: 1.0 - intensity }
+          }));
         } else {
           flickerActive = false;
           ambientFlicker.current = 1.0;
           nextFlickerTime = now + 12000 + Math.random() * 15000; // Schedule next instability
+
+          window.dispatchEvent(new CustomEvent('env-flicker', {
+            detail: { intensity: 0 }
+          }));
         }
       } else {
         // Slow exposure breathing (Cinematic Respiration)
@@ -193,6 +210,7 @@ const LiveEnvironmentSystem: React.FC = () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mouseover', handleMouseOver);
       cancelAnimationFrame(animId);
     };
   }, []);
