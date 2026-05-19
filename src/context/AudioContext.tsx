@@ -122,7 +122,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   // 1. Initialize Audio Context and Layers
-  const startAudio = async () => {
+  const startAudioInternal = async () => {
     if (audioCtxRef.current) {
       if (audioCtxRef.current.state === 'suspended') {
         await audioCtxRef.current.resume();
@@ -143,8 +143,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Create Main Routing Nodes
     const masterGain = ctx.createGain();
-    // Default volume: between 0.05 and 0.08. Mobile: even lower.
-    const defaultVolume = isMobile ? 0.04 : 0.07;
+    // Default volume: boosted for clear audibility. Mobile: slightly lower.
+    const defaultVolume = isMobile ? 0.12 : 0.22;
     masterGain.gain.setValueAtTime(0, ctx.currentTime);
     // Smooth fade-in over 4 seconds
     masterGain.gain.linearRampToValueAtTime(defaultVolume, ctx.currentTime + 4.0);
@@ -529,17 +529,27 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const silenceLfo = ctx.createOscillator();
     silenceLfo.frequency.setValueAtTime(0.013, ctx.currentTime); // 77-second respiration cycle
     const silenceLfoGain = ctx.createGain();
-    // Modulate gain by 0.35, meaning silenceGain.gain will dip from 1.0 down to 0.45 slowly
-    silenceLfoGain.gain.setValueAtTime(0.45, ctx.currentTime);
+    // Reduce modulation depth so silence dips are subtle, not suppressive (was 0.45)
+    silenceLfoGain.gain.setValueAtTime(0.12, ctx.currentTime);
     
     silenceLfo.connect(silenceLfoGain);
-    // Offset so modulation oscillates between 0.55 and 1.45, clamped/scaled appropriately
+    // Modulation now gently oscillates gain between ~0.88 and ~1.12 instead of 0.55→1.45
     silenceLfoGain.connect(silenceGain.gain);
     silenceLfo.start();
     activeOscillatorsRef.current.push(silenceLfo);
 
     setIsInitialized(true);
     setSoundOn(true);
+  };
+
+  const startAudio = async () => {
+    try {
+      await startAudioInternal();
+    } catch (error) {
+      console.error("Failed to start audio context:", error);
+      setIsInitialized(true);
+      setSoundOn(true);
+    }
   };
 
   // 2. Toggle Sound (Mute/Unmute)
@@ -560,7 +570,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         ctx.resume();
       }
       playClick(360, 0.1);
-      const defaultVolume = isMobile ? 0.04 : 0.07;
+      const defaultVolume = isMobile ? 0.12 : 0.22;
       master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
       master.gain.linearRampToValueAtTime(defaultVolume, ctx.currentTime + 0.4);
       setSoundOn(true);
