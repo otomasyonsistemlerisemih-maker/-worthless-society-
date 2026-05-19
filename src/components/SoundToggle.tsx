@@ -23,7 +23,7 @@ const SoundToggle: React.FC = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      SOUND: {soundOn ? 'ON' : 'OFF'}
+      AMBIENCE: {soundOn ? 'ON' : 'OFF'}
     </button>
   );
 };

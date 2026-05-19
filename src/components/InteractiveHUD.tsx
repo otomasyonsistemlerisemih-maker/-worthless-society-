@@ -16,16 +16,16 @@ const InteractiveHUD: React.FC<InteractiveHUDProps> = ({ thermalMode, scrollProg
   const [logs, setLogs] = useState<string[]>([]);
   
   const logMessages = [
-    "INITIALIZING_VOID_SCAN...",
-    "PACKET_RECEIVED: 0x8821B",
-    "ENCRYPTING_SESSION_DATA...",
-    "SIGNAL_STABILITY_LOW",
-    "UPLINK_ESTABLISHED",
-    "ARCHIVE_ACCESS_LOGGED",
-    "THERMAL_SENSORS_ACTIVE",
-    "DECRYPTING_BUFFER_09",
-    "LATENCY_DETECTED: 12ms",
-    "BYPASSING_FIREWALL_B..."
+    "LOADING ARCHIVE RECORDS...",
+    "OBJECT INDEXED: REF_8821B",
+    "CLASSIFYING ACCESS ENTRY...",
+    "RECOVERY SIGNAL UNSTABLE",
+    "ARCHIVE CONNECTION ACTIVE",
+    "ENTRY RECORDED",
+    "CONDITION SURVEY ACTIVE",
+    "RETRIEVING OBJECT 09",
+    "SIGNAL DELAYED",
+    "CLEARANCE PENDING..."
   ];
 
   useEffect(() => {
@@ -61,11 +61,11 @@ const InteractiveHUD: React.FC<InteractiveHUDProps> = ({ thermalMode, scrollProg
 
   return (
     <div className={`hud-container ${thermalMode ? 'thermal-hud' : ''}`}>
-      {/* Top Left: Session & Signal */}
+      {/* Top Left: Archive Record & Signal */}
       <div className="hud-top-left">
-        <div className="hud-metric">VOID_ARCHIVE // SESSION: {sessionID}</div>
+        <div className="hud-metric">WORTHLESS ARCHIVE // RECORD: {sessionID}</div>
         <div className="hud-metric flex-items-center">
-          SIGNAL: {signal.toFixed(1)}% 
+          ARCHIVE SIGNAL: {signal.toFixed(1)}%
           <div className="signal-bars">
             {[1, 2, 3, 4, 5].map(i => (
               <div 
@@ -77,30 +77,30 @@ const InteractiveHUD: React.FC<InteractiveHUDProps> = ({ thermalMode, scrollProg
         </div>
       </div>
 
-      {/* Top Right: System Status */}
+      {/* Top Right: Archive Condition */}
       <div className="hud-top-right">
-        <div className="hud-metric">DATA_RX: {dataSpeed} KB/s</div>
-        <div className="hud-metric">STATUS: {thermalMode ? 'SCANNING' : 'SECURE'}</div>
+        <div className="hud-metric">DEPTH INDEX: {dataSpeed}</div>
+        <div className="hud-metric">CONDITION: {thermalMode ? 'SURVEYING' : 'STABLE'}</div>
       </div>
 
-      {/* Bottom Left: Live Logs */}
+      {/* Bottom Left: Archive Activity */}
       <div className="hud-bottom-left">
         <div className="system-logs">
           {logs.map((log, index) => (
-            <div key={index} className="log-line">{`> ${log}`}</div>
+            <div key={index} className="log-line">{`— ${log}`}</div>
           ))}
         </div>
         <div className="hud-metric mt-2">LAT: 41.0082° N // LON: 28.9784° E</div>
       </div>
 
-      {/* Bottom Right: Clock & Coords */}
+      {/* Bottom Right: Clock & Position */}
       <div className="hud-bottom-right">
         <div className="hud-metric">{currentTime}</div>
         <div className="hud-metric">
           X: {coords.x.toString().padStart(4, '0')} // Y: {coords.y.toString().padStart(4, '0')}
         </div>
         <div className="hud-metric scroll-metric">
-          SCRL_POS: {scrollProgress.toFixed(1)}%
+          ARCHIVE DEPTH: {scrollProgress.toFixed(1)}%
         </div>
       </div>
 

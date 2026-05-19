@@ -18,8 +18,8 @@ export default function Home() {
   const [terminalActive, setTerminalActive] = useState(false);
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalLines, setTerminalLines] = useState<React.ReactNode[]>([
-    <p key="1">WARNING: RESTRICTED ARCHIVE DETECTED.</p>,
-    <p key="2">PLEASE ENTER PASSCODE TO UNLOCK COMPARTMENT 009.</p>
+    <p key="1">RESTRICTED OBJECT CHAMBER 009 DETECTED.</p>,
+    <p key="2">ARCHIVE KEY REQUIRED TO ACCESS COMPARTMENT 009.</p>
   ]);
   const [unlocked, setUnlocked] = useState(false);
 
@@ -307,7 +307,7 @@ export default function Home() {
         setTerminalLines(prev => [
           ...prev,
           <p key={Date.now()} className="granted">ACCESS GRANTED.</p>,
-          <p key={Date.now()+1} className="granted">DECRYPTING COMPARTMENT 009...</p>
+          <p key={Date.now()+1} className="granted">CLEARANCE CONFIRMED. RETRIEVING COMPARTMENT 009...</p>
         ]);
         playClick(800, 0.5);
         
@@ -323,7 +323,7 @@ export default function Home() {
       } else {
         setTerminalLines(prev => [
           ...prev,
-          <p key={Date.now()} className="denied">ACCESS DENIED: INCORRECT PASSCODE.</p>
+          <p key={Date.now()} className="denied">ACCESS DENIED. ARCHIVE KEY INVALID.</p>
         ]);
         setTerminalInput('');
         playClick(100, 0.3);
@@ -386,7 +386,7 @@ export default function Home() {
       <div className="scanline-overlay"></div>
       <div className="hud-indicator">
         <span className="rec-dot"></span>
-        REC [00:00:{Math.floor(progress/10)}] — SIGNAL: WEAK — VOID_THERMAL_SCAN
+        REC [00:00:{Math.floor(progress/10)}] — RECOVERY SIGNAL FADED — CONDITION SURVEY
       </div>
 
       {/* Live Feed HUD */}
@@ -444,7 +444,7 @@ export default function Home() {
               playClick(thermalMode ? 400 : 1200, 0.1);
             }}
           >
-            {thermalMode ? 'THERMAL_ON' : 'THERMAL_OFF'}
+            {thermalMode ? 'SURVEY: ON' : 'SURVEY: OFF'}
           </button>
           <a href="#shop">Shop</a>
           <a href="#archive">Archive</a>
@@ -535,15 +535,15 @@ export default function Home() {
         {/* Campaign Section */}
         <section id="campaign" className="campaign">
           <div className="container">
-            <h2 className="fade-in">CAMPAIGN VIDEOS</h2>
+            <h2 className="fade-in">VISUAL RECORDS</h2>
             <div className="video-grid">
               <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">VOID_01</div>
+                <div className="video-overlay">RECORD_01</div>
               </div>
               <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export2.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">VOID_02</div>
+                <div className="video-overlay">RECORD_02</div>
               </div>
               <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/worthless yelek.mp4" autoPlay loop muted playsInline></video>
@@ -559,11 +559,11 @@ export default function Home() {
               </div>
               <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export3.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">VOID_04</div>
+                <div className="video-overlay">RECORD_04</div>
               </div>
               <div className="video-wrapper fade-in" style={{ gridColumn: '1 / -1' }} onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/sonvideo4.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">THE_FINAL_VOID</div>
+                <div className="video-overlay">THE FINAL RECORD</div>
               </div>
             </div>
           </div>
@@ -606,15 +606,15 @@ export default function Home() {
       <div id="terminal-modal" className={`terminal-overlay ${terminalActive ? 'active' : ''}`}>
         <div className="terminal-content">
           <div className="terminal-header">
-            <span>ROOT@VOID_ARCHIVE:~</span>
+            <span>ARCHIVE ACCESS NODE</span>
             <span className="terminal-close" onClick={() => {
               setTerminalActive(false);
               setTerminalLines([
-                <p key="1">WARNING: RESTRICTED ARCHIVE DETECTED.</p>,
-                <p key="2">PLEASE ENTER PASSCODE TO UNLOCK COMPARTMENT 009.</p>
+                <p key="1">RESTRICTED OBJECT CHAMBER 009 DETECTED.</p>,
+                <p key="2">ARCHIVE KEY REQUIRED TO ACCESS COMPARTMENT 009.</p>
               ]);
               setTerminalInput('');
-            }}>[X]</span>
+            }}>[CLOSE]</span>
           </div>
           <div className="terminal-body">
             {terminalLines}
@@ -636,7 +636,7 @@ export default function Home() {
       </div>
 
       <footer style={{ padding: '4rem 2rem', textAlign: 'center', opacity: 0.3, fontSize: '0.6rem', letterSpacing: '0.2em' }}>
-        © 2026 WORTHLESS ARCHIVE. ALL RIGHTS RESERVED.
+        © 2026 WORTHLESS ARCHIVE. ALL OBJECTS CLASSIFIED.
       </footer>
 
 

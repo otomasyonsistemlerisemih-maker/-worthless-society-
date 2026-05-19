@@ -21,7 +21,7 @@ const SecretPage = () => {
       setError('');
       startAudio(); // Start or resume global sound on interaction
     } else {
-      setError('ACCESS DENIED. INCORRECT KEY.');
+      setError('ACCESS DENIED. ARCHIVE KEY INVALID.');
     }
   };
 
@@ -43,7 +43,7 @@ const SecretPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black p-8">
       <div className="max-w-md w-full">
-        <h2 className="text-[10px] tracking-[0.5em] text-white/30 uppercase mb-8 text-center">Identity Verification Required</h2>
+        <h2 className="text-[10px] tracking-[0.5em] text-white/30 uppercase mb-8 text-center">ARCHIVE CLEARANCE REQUIRED</h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="password"
@@ -56,7 +56,7 @@ const SecretPage = () => {
             type="submit"
             className="w-full p-4 border border-white/10 hover:bg-white hover:text-black transition-all duration-500 text-[10px] tracking-[0.5em] uppercase"
           >
-            Authenticate
+            REQUEST ACCESS
           </button>
         </form>
         {error && <p className="mt-4 text-[10px] text-accent text-center tracking-widest">{error}</p>}
