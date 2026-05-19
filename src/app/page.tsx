@@ -203,6 +203,18 @@ export default function Home() {
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+    // Manifesto cinematic reveal observer (lower threshold, earlier trigger)
+    const manifestoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          manifestoObserver.unobserve(entry.target); // only trigger once
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+
+    document.querySelectorAll('.fade-manifesto').forEach(el => manifestoObserver.observe(el));
+
     // Three.js
     if (!canvasRef.current) return;
     const scene = new THREE.Scene();
@@ -504,18 +516,44 @@ export default function Home() {
 
         {/* Manifesto Section */}
         <section id="manifesto" className="manifesto">
-          <div className="manifesto-content fade-in">
-            <p className="subtext" style={{ marginBottom: '2rem' }}>MANIFESTO</p>
-            <h2>THE MODERN WORLD PROFITS FROM INSECURITY.</h2>
-            <p>
-              Worthless was built for the people who survived it silently. 
-              We represent the <span id="secret-trigger" onClick={handleVoidClick} style={{cursor: 'pointer'}} onMouseEnter={() => { followerRef.current?.classList.add('active'); }} onMouseLeave={() => followerRef.current?.classList.remove('active')}>invisible</span> strength of the overlooked. 
-              No glorification of weakness. 
-              Only the endurance of pressure.
-            </p>
-            <div style={{ marginTop: '4rem' }}>
-              <p className="subtext">STAY COLD.</p>
+          <div className="manifesto-content">
+
+            {/* Low-contrast label */}
+            <span className="manifesto-label">Archive Statement</span>
+
+            {/* Thesis — emotional law */}
+            <div className="manifesto-thesis fade-manifesto">
+              THE MODERN WORLD<br />
+              PROFITS FROM INSECURITY.
             </div>
+
+            {/* Vertical hairline divider */}
+            <div className="manifesto-divider" />
+
+            {/* Human, quiet voice */}
+            <div className="manifesto-body fade-manifesto">
+              Worthless was built for the people<br />
+              who survived it{' '}
+              <span
+                id="secret-trigger"
+                onClick={handleVoidClick}
+                style={{ cursor: 'pointer' }}
+                onMouseEnter={() => { followerRef.current?.classList.add('active'); }}
+                onMouseLeave={() => followerRef.current?.classList.remove('active')}
+              >
+                silently
+              </span>.
+            </div>
+
+            {/* Cold conclusion */}
+            <div className="manifesto-conclusion fade-manifesto">
+              No glorification of weakness.<br />
+              Only endurance under pressure.
+            </div>
+
+            {/* Final mark */}
+            <span className="manifesto-stay-cold fade-manifesto">Stay Cold.</span>
+
           </div>
         </section>
 
