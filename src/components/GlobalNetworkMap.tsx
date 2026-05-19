@@ -13,14 +13,14 @@ interface Node {
 }
 
 const INITIAL_NODES: Node[] = [
-  { name: "ISTANBUL_NODE_01", lat: "41.0082 N", lon: "28.9784 E", xPercent: 55, yPercent: 42, status: "ACTIVE", ping: 12 },
-  { name: "BERLIN_NODE_09", lat: "52.5200 N", lon: "13.4050 E", xPercent: 48, yPercent: 33, status: "ACTIVE", ping: 24 },
-  { name: "TOKYO_NODE_04", lat: "35.6762 N", lon: "139.6503 E", xPercent: 85, yPercent: 45, status: "ENCRYPTED", ping: 88 },
-  { name: "NEW_YORK_NODE_12", lat: "40.7128 N", lon: "74.0060 W", xPercent: 25, yPercent: 40, status: "STANDBY", ping: 45 },
-  { name: "LONDON_NODE_02", lat: "51.5074 N", lon: "0.1278 W", xPercent: 44, yPercent: 35, status: "ACTIVE", ping: 18 },
-  { name: "REYKJAVIK_NODE_07", lat: "64.1466 N", lon: "21.9426 W", xPercent: 38, yPercent: 22, status: "ACTIVE", ping: 110 },
-  { name: "SYDNEY_NODE_08", lat: "33.8688 S", lon: "151.2093 E", xPercent: 90, yPercent: 80, status: "STANDBY", ping: 142 },
-  { name: "VOID_NODE_009", lat: "??.???? N", lon: "??.???? E", xPercent: 62, yPercent: 58, status: "RESTRICTED", ping: 0 }
+  { name: "ISTANBUL_ENTRY_01", lat: "41.0082 N", lon: "28.9784 E", xPercent: 55, yPercent: 42, status: "ACTIVE", ping: 12 },
+  { name: "BERLIN_ENTRY_09", lat: "52.5200 N", lon: "13.4050 E", xPercent: 48, yPercent: 33, status: "ACTIVE", ping: 24 },
+  { name: "TOKYO_ENTRY_04", lat: "35.6762 N", lon: "139.6503 E", xPercent: 85, yPercent: 45, status: "ENCRYPTED", ping: 88 },
+  { name: "NEW_YORK_ENTRY_12", lat: "40.7128 N", lon: "74.0060 W", xPercent: 25, yPercent: 40, status: "STANDBY", ping: 45 },
+  { name: "LONDON_ENTRY_02", lat: "51.5074 N", lon: "0.1278 W", xPercent: 44, yPercent: 35, status: "ACTIVE", ping: 18 },
+  { name: "REYKJAVIK_ENTRY_07", lat: "64.1466 N", lon: "21.9426 W", xPercent: 38, yPercent: 22, status: "ACTIVE", ping: 110 },
+  { name: "SYDNEY_ENTRY_08", lat: "33.8688 S", lon: "151.2093 E", xPercent: 90, yPercent: 80, status: "STANDBY", ping: 142 },
+  { name: "VOID_ENTRY_009", lat: "??.???? N", lon: "??.???? E", xPercent: 62, yPercent: 58, status: "RESTRICTED", ping: 0 }
 ];
 
 interface GlobalNetworkMapProps {
@@ -37,15 +37,15 @@ const GlobalNetworkMap: React.FC<GlobalNetworkMapProps> = ({ thermalMode }) => {
   // Add real-time stream logs
   useEffect(() => {
     const logs = [
-      "ESTABLISHING SECURE MULTI-NODE LINK...",
-      "ISTANBUL_NODE_01: PACKET_BURST_STABLE [12ms]",
-      "TOKYO_NODE_04: RE-ROUTING COMPARTMENT 009 TRAFFIC",
-      "WARNING: CORRUPTED DATASTREAM AT LONDON_NODE_02",
-      "VOID_NODE_009: STATUS UNKNOWN // RESTRICTED",
-      "BERLIN_NODE_09: SEEDING NEW CRYPT_BUFFER",
-      "NEW_YORK_NODE_12: ENCRYPTING TELEMETRY HEADER",
-      "REYKJAVIK_NODE_07: SYSTEM TEMPERATURE 4.2K",
-      "UPLINK DECRYPTED ON FREQUENCY 440HZ"
+      "LOADING ARCHIVE INDEX...",
+      "ISTANBUL_ENTRY_01: SIGNAL STABLE",
+      "TOKYO_ENTRY_04: COMPARTMENT 009 ACCESSED",
+      "LONDON_ENTRY_02: SIGNAL CONDITION DEGRADED",
+      "VOID_ENTRY_009: STATUS UNDISCLOSED",
+      "BERLIN_ENTRY_09: ENTRY RECORDED",
+      "NEW_YORK_ENTRY_12: CLEARANCE PENDING",
+      "REYKJAVIK_ENTRY_07: SIGNAL FADED",
+      "ARCHIVE CONNECTION ACTIVE"
     ];
 
     const interval = setInterval(() => {
@@ -221,11 +221,11 @@ const GlobalNetworkMap: React.FC<GlobalNetworkMapProps> = ({ thermalMode }) => {
   return (
     <div ref={containerRef} className="network-map-section">
       <div className="telemetry-grid">
-        {/* Real-time terminal stream (Sidebar) */}
+        {/* Archive readings stream (Sidebar) */}
         <div className="telemetry-logs-panel">
           <div className="panel-header">
             <span className="rec-dot"></span>
-            SYS_TELEMETRY // STREAM_RX
+            ARCHIVE READINGS // LIVE
           </div>
           <div className="logs-container">
             {consoleLogs.map((log, index) => (
@@ -258,9 +258,9 @@ const GlobalNetworkMap: React.FC<GlobalNetworkMapProps> = ({ thermalMode }) => {
               
               <div className="overlay-header">{selectedNode.name}</div>
               <div className="overlay-line">COORDS: {selectedNode.lat} / {selectedNode.lon}</div>
-              <div className="overlay-line">PING: {selectedNode.ping === 0 ? 'N/A' : `${selectedNode.ping}ms`}</div>
+              <div className="overlay-line">SIGNAL: {selectedNode.ping === 0 ? 'N/A' : `${selectedNode.ping}ms`}</div>
               <div className="overlay-line">
-                SEC_STATUS: <span className={selectedNode.status === 'RESTRICTED' ? 'status-restricted' : 'status-active'}>
+                OBJECT STATUS: <span className={selectedNode.status === 'RESTRICTED' ? 'status-restricted' : 'status-active'}>
                   {selectedNode.status}
                 </span>
               </div>

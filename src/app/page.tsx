@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import Lenis from 'lenis';
 import InteractiveHUD from '@/components/InteractiveHUD';
 import GlobalNetworkMap from '@/components/GlobalNetworkMap';
+import NetworkAccessForm from '@/components/NetworkAccessForm';
 import { useAudio } from '@/context/AudioContext';
 
 export default function Home() {
@@ -664,13 +665,29 @@ export default function Home() {
         {/* Global Network Section */}
         <section id="network" className="network-section">
           <div className="container">
-            <div className="fade-in">
-              <p className="subtext" style={{ marginBottom: '1rem' }}>GLOBAL_VOID_NETWORK</p>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>CONNECTED AGENTS: ACTIVE</h2>
+
+            {/* Section identity */}
+            <div className="fade-in network-header">
+              <span className="subtext network-label">Network</span>
+              <h2 className="network-heading">GLOBAL_VOID_NETWORK</h2>
+              <p className="network-body">
+                A silent index of people who endured pressure.
+              </p>
+              <div className="network-meta">
+                <span>CONNECTED MEMBERS: ACTIVE</span>
+                <span className="network-meta-divider">·</span>
+                <span>ACCESS: RESTRICTED</span>
+              </div>
             </div>
+
+            {/* Archive Map */}
             <div className="fade-in">
               <GlobalNetworkMap thermalMode={thermalMode} />
             </div>
+
+            {/* REQUEST ACCESS form */}
+            <NetworkAccessForm />
+
           </div>
         </section>
 

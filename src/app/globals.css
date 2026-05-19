@@ -1164,6 +1164,156 @@ section {
   border-bottom: 1px solid var(--accent);
 }
 
+/* Network section header block */
+.network-header {
+  margin-bottom: 3rem;
+}
+
+.network-label {
+  display: block;
+  margin-bottom: 1.5rem;
+  opacity: 0.4;
+}
+
+.network-heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.network-body {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  margin-bottom: 1.5rem;
+  max-width: 480px;
+}
+
+.network-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.network-meta-divider {
+  opacity: 0.3;
+}
+
+/* REQUEST ACCESS form */
+.network-access-form {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--accent);
+}
+
+.network-access-inner {
+  max-width: 520px;
+}
+
+.network-access-fields {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 1.5rem;
+}
+
+.network-access-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1.1rem 1.25rem;
+  outline: none;
+  placeholder-color: var(--text-muted);
+  transition: background 0.4s ease;
+}
+
+.network-access-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.45;
+  text-transform: lowercase;
+  letter-spacing: 0.1em;
+}
+
+.network-access-input:focus {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.network-access-btn {
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1.1rem 1.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  opacity: 0.7;
+  transition:
+    opacity 0.6s cubic-bezier(0.25, 1, 0.3, 1),
+    background 0.6s cubic-bezier(0.25, 1, 0.3, 1),
+    color 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.network-access-btn:hover {
+  opacity: 1;
+  background: var(--text-main);
+  color: var(--bg);
+}
+
+.network-access-message {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1.1rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.network-access-success {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.network-access-error {
+  color: rgba(255, 80, 80, 0.7);
+}
+
+.network-access-note {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.35;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+@media (max-width: 600px) {
+  .network-access-fields {
+    flex-direction: column;
+  }
+  .network-access-btn {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+  }
+}
+
 .telemetry-grid {
   display: grid;
   grid-template-columns: 300px 1fr;
