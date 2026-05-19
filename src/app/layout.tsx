@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import DustParticles from "@/components/DustParticles";
 
 export const metadata: Metadata = {
   title: "WORTHLESS | SILENT PRESSURE",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <DustParticles />
         {children}
       </body>
     </html>
