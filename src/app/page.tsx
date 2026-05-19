@@ -785,7 +785,7 @@ export default function Home() {
       <div id="product-modal" className={`modal ${modalActive ? 'active blueprint' : ''}`}>
         <div className="grid-overlay"></div>
         <div className="restricted-stamp">RESTRICTED_ARCHIVE</div>
-        <div className="modal-close" onClick={() => { setModalActive(false); document.body.style.overflow = 'auto'; }}>CLOSE_ARCHIVE_FILE</div>
+        <div className="modal-close" onClick={() => { setModalActive(false); document.body.style.overflow = 'auto'; }}>SEAL ARCHIVE</div>
         {activeProduct && (
           <div className="product-detail-grid" style={{ position: 'relative', zIndex: 2 }}>
             <div style={{ position: 'relative' }}>
@@ -825,7 +825,7 @@ export default function Home() {
                 <p key="2">ARCHIVE KEY REQUIRED TO ACCESS COMPARTMENT 009.</p>
               ]);
               setTerminalInput('');
-            }}>[CLOSE]</span>
+            }}>[SEAL ARCHIVE]</span>
           </div>
           <div className="terminal-body">
             {terminalLines}
