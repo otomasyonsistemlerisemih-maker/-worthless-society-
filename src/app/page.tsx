@@ -48,7 +48,7 @@ export default function Home() {
   const masterGainRef = useRef<GainNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const bgSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const bgGainNodeRef = useRef<GainNode | null>(null);
 
   const cartCountRef = useRef(0);
@@ -111,8 +111,8 @@ export default function Home() {
     };
   }, []);
 
-  const initAudio = () => {
-    if (bgAudioRef.current) return;
+  const initAudio = async () => {
+    if (bgSourceRef.current) return;
 
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) return;
@@ -122,7 +122,7 @@ export default function Home() {
 
     // Explicitly resume audio context to bypass modern browser suspension policy
     if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
+      await audioCtx.resume();
     }
 
     const masterGain = audioCtx.createGain();
@@ -137,25 +137,29 @@ export default function Home() {
     analyserRef.current = analyser;
     masterGain.connect(analyser);
 
-    // Subtle background audio system
-    const bgAudio = new Audio('/audio/worthless.mp3');
-    bgAudio.loop = true;
-    bgAudioRef.current = bgAudio;
-
-    const source = audioCtx.createMediaElementSource(bgAudio);
     const bgGain = audioCtx.createGain();
     bgGainNodeRef.current = bgGain;
-
-    source.connect(bgGain);
     bgGain.connect(masterGain);
 
     // start at low volume, fade in slowly over 4 seconds, stay at 8% volume by default (0.16 * masterGain(0.5) = 0.08 final volume)
     bgGain.gain.setValueAtTime(0, audioCtx.currentTime);
     bgGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 4.0);
 
-    bgAudio.play().catch(err => {
-      console.warn("Background audio play failed:", err);
-    });
+    try {
+      const response = await fetch('/audio/worthless.mp3');
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+      const sourceNode = audioCtx.createBufferSource();
+      sourceNode.buffer = audioBuffer;
+      sourceNode.loop = true;
+      sourceNode.connect(bgGain);
+      
+      sourceNode.start(0);
+      bgSourceRef.current = sourceNode;
+    } catch (err) {
+      console.error("Failed to load or decode ambient background audio:", err);
+    }
   };
 
   const playClick = (freq: number, duration: number) => {
@@ -341,9 +345,11 @@ export default function Home() {
       window.removeEventListener('mousemove', onThreeMouseMove);
       cancelAnimationFrame(threeAnimId);
       window.removeEventListener('resize', onResize);
-      if (bgAudioRef.current) {
-        bgAudioRef.current.pause();
-        bgAudioRef.current = null;
+      if (bgSourceRef.current) {
+        try {
+          bgSourceRef.current.stop();
+        } catch (e) {}
+        bgSourceRef.current = null;
       }
       if (audioCtxRef.current) {
         audioCtxRef.current.close();
