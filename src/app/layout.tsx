@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import DustParticles from "@/components/DustParticles";
-import InvisibleDepthSystem from "@/components/InvisibleDepthSystem";
+import LiveEnvironmentSystem from "@/components/LiveEnvironmentSystem";
 
 export const metadata: Metadata = {
   title: "WORTHLESS | SILENT PRESSURE",
@@ -16,8 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <InvisibleDepthSystem />
-        <DustParticles />
+        <LiveEnvironmentSystem />
         {children}
       </body>
     </html>
