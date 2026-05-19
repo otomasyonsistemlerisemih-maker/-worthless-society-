@@ -345,6 +345,12 @@ export default function Home() {
       window.removeEventListener('mousemove', onThreeMouseMove);
       cancelAnimationFrame(threeAnimId);
       window.removeEventListener('resize', onResize);
+    };
+  }, [showPreloader]);
+
+  // Dedicated Audio Cleanup on Page Unmount
+  useEffect(() => {
+    return () => {
       if (bgSourceRef.current) {
         try {
           bgSourceRef.current.stop();
@@ -356,7 +362,7 @@ export default function Home() {
         audioCtxRef.current = null;
       }
     };
-  }, [showPreloader]);
+  }, []);
 
   const handleTerminalSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
