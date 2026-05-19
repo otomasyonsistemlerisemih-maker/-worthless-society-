@@ -19,8 +19,15 @@ const ParticleField = () => {
   }, []);
 
   useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 10;
-    ref.current.rotation.y -= delta / 15;
+    // Almost static, massive spatial rotation
+    ref.current.rotation.x -= delta / 30;
+    ref.current.rotation.y -= delta / 45;
+
+    // Ultra-slow handheld camera breathing and focus sway (Tarkovsky atmosphere)
+    const time = state.clock.getElapsedTime();
+    state.camera.position.x = Math.sin(time * 0.12) * 0.06;
+    state.camera.position.y = Math.cos(time * 0.08) * 0.06;
+    state.camera.lookAt(0, 0, 0);
   });
 
   return (
@@ -28,11 +35,11 @@ const ParticleField = () => {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
-          color="#ffffff"
-          size={0.015}
+          color="#666666" // Faded concrete ash
+          size={0.012}
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.3}
+          opacity={0.16}
         />
       </Points>
     </group>
@@ -43,7 +50,7 @@ const HeroScene = () => {
   return (
     <div className="absolute inset-0 -z-10">
       <Canvas camera={{ position: [0, 0, 1] }}>
-        <color attach="background" args={['#000000']} />
+        <color attach="background" args={['#050505']} />
         <ParticleField />
       </Canvas>
     </div>
