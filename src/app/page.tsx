@@ -18,9 +18,9 @@ export default function Home() {
   // Terminal state
   const [terminalActive, setTerminalActive] = useState(false);
   const [terminalInput, setTerminalInput] = useState('');
-  const [terminalLines, setTerminalLines] = useState<React.ReactNode[]>([
-    <p key="1">RESTRICTED OBJECT CHAMBER 009 DETECTED.</p>,
-    <p key="2">ARCHIVE KEY REQUIRED TO ACCESS COMPARTMENT 009.</p>
+  const [terminalLines, setTerminalLines] = useState<JSX.Element[]>([
+    <p key="1">RESTRICTED OBJECT CHAMBER 009.</p>,
+    <p key="2">ARCHIVE KEY REQUIRED.</p>
   ]);
   const [unlocked, setUnlocked] = useState(false);
 
@@ -821,8 +821,8 @@ export default function Home() {
             <span className="terminal-close" onClick={() => {
               setTerminalActive(false);
               setTerminalLines([
-                <p key="1">RESTRICTED OBJECT CHAMBER 009 DETECTED.</p>,
-                <p key="2">ARCHIVE KEY REQUIRED TO ACCESS COMPARTMENT 009.</p>
+                <p key="1">RESTRICTED OBJECT CHAMBER 009.</p>,
+                <p key="2">ARCHIVE KEY REQUIRED.</p>
               ]);
               setTerminalInput('');
             }}>[SEAL ARCHIVE]</span>
