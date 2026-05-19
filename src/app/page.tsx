@@ -119,6 +119,12 @@ export default function Home() {
     
     const audioCtx = new AudioContextClass();
     audioCtxRef.current = audioCtx;
+
+    // Explicitly resume audio context to bypass modern browser suspension policy
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
     const masterGain = audioCtx.createGain();
     masterGainRef.current = masterGain;
     
@@ -186,6 +192,9 @@ export default function Home() {
       }
       setSoundOn(false);
     } else {
+      if (audioCtx) {
+        audioCtx.resume();
+      }
       if (audioCtx && bgGain) {
         bgGain.gain.setValueAtTime(bgGain.gain.value, audioCtx.currentTime);
         bgGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 0.5);
