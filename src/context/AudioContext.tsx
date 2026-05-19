@@ -315,7 +315,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // LAYER 4: ANALOG AMBIENCE LAYER
     // ==========================================
     const analogGain = ctx.createGain();
-    analogGain.gain.setValueAtTime(0.04, ctx.currentTime);
+    analogGain.gain.setValueAtTime(0.35, ctx.currentTime);
     analogGainRef.current = analogGain;
 
     // Hiss (soft white noise)
@@ -330,7 +330,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     hissFilter.Q.setValueAtTime(0.4, ctx.currentTime);
 
     const hissGain = ctx.createGain();
-    hissGain.gain.setValueAtTime(0.003, ctx.currentTime); // Barely audible tape floor
+    hissGain.gain.setValueAtTime(0.016, ctx.currentTime); // Soft warm analog tape hiss
 
     hissSource.connect(hissFilter);
     hissFilter.connect(hissGain);
@@ -374,7 +374,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       clickFilter.Q.setValueAtTime(2.0, now);
 
       const clickVolume = ctx.createGain();
-      clickVolume.gain.setValueAtTime(0.004 + Math.random() * 0.006, now);
+      clickVolume.gain.setValueAtTime(0.07 + Math.random() * 0.09, now);
 
       clickSource.connect(clickFilter);
       clickFilter.connect(clickVolume);
