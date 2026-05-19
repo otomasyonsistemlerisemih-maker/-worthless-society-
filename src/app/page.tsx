@@ -9,6 +9,81 @@ import GlobalNetworkMap from '@/components/GlobalNetworkMap';
 import NetworkAccessForm from '@/components/NetworkAccessForm';
 import { useAudio } from '@/context/AudioContext';
 
+interface InspectionHotspot {
+  category: string;
+  label: string;
+  desc: string;
+  x: number;
+  y: number;
+}
+
+const productInspectionData: Record<string, InspectionHotspot[]> = {
+  '1': [
+    { category: 'SURFACE DAMAGE', label: 'DEGRADED TYPOGRAPHY', desc: 'Archive wash treatment showing erosion on printed boundaries.', x: 45, y: 35 },
+    { category: 'INTERNAL MESSAGE', label: 'ENDURE QUIETLY', desc: 'Inner neck stamp. Silent instruction for wearer.', x: 50, y: 18 },
+    { category: 'ARCHIVE MARK', label: 'DAMAGED SYMBOL SYSTEM', desc: 'Low visibility classification identifier on hemline.', x: 80, y: 85 },
+    { category: 'FABRIC WEIGHT', label: 'HEAVYWEIGHT STRUCTURE', desc: '500 GSM double-face dense weave cotton built for shielding.', x: 25, y: 55 },
+    { category: 'CLASSIFICATION', label: 'EMOTIONAL ARMOR', desc: 'Archived uniform piece built to isolate external sensory feedback.', x: 70, y: 50 },
+    { category: 'CONDITION', label: 'RECOVERED', desc: 'Obtained post-pressure test. Structural condition intact.', x: 50, y: 70 }
+  ],
+  '2': [
+    { category: 'SURFACE DAMAGE', label: 'FADED SURFACE', desc: 'Pigment dyed color fading on seams from high-frequency wear.', x: 30, y: 40 },
+    { category: 'INTERNAL MESSAGE', label: 'LOW VISIBILITY', desc: 'Subtle text placement on inner side seams.', x: 85, y: 65 },
+    { category: 'ARCHIVE MARK', label: 'PRINTED OBJECT CODE', desc: 'Institutional object record identifier applied near bottom hem.', x: 20, y: 80 },
+    { category: 'FABRIC WEIGHT', label: 'BASE LAYER STRUCTURE', desc: '280 GSM relaxed drape structure for everyday transition.', x: 50, y: 50 },
+    { category: 'CLASSIFICATION', label: 'LOW VISIBILITY UNIFORM', desc: 'Restricted archive base layer designed for silent presence.', x: 70, y: 30 },
+    { category: 'CONDITION', label: 'ACTIVE', desc: 'Currently verified. Fits silent endurance index standard.', x: 48, y: 15 }
+  ],
+  '3': [
+    { category: 'SURFACE DAMAGE', label: 'WASHED SEAMS', desc: 'High pressure dye process creating unique tonal irregularities.', x: 25, y: 30 },
+    { category: 'INTERNAL MESSAGE', label: 'MOUTH CLOSED', desc: 'Internal label stating "MOUTH CLOSED. EYES WIDE".', x: 50, y: 22 },
+    { category: 'ARCHIVE MARK', label: 'RESTRICTED SEAL', desc: 'Subtle logo imprint at outer center back.', x: 52, y: 55 },
+    { category: 'FABRIC WEIGHT', label: 'DENSE SHELL STRUCTURE', desc: '420 GSM heavy loopback structure designed to absorb force.', x: 75, y: 48 },
+    { category: 'CLASSIFICATION', label: 'RESTRICTED ARCHIVE', desc: 'Quiet survival layer for high density pressure environments.', x: 35, y: 75 },
+    { category: 'CONDITION', label: 'RECOVERED', desc: 'Documented unit. Wash-processed post-recovery.', x: 55, y: 85 }
+  ],
+  '4': [
+    { category: 'SURFACE DAMAGE', label: 'COLLAPSED SEAMS', desc: 'Irregular double stitching designed to fall and drape naturally.', x: 35, y: 35 },
+    { category: 'INTERNAL MESSAGE', label: 'CONCEAL IDENTITY', desc: 'Concealment message embedded inside wear zone.', x: 50, y: 15 },
+    { category: 'ARCHIVE MARK', label: 'INDEX CODE SYSTEM', desc: 'Laser engraved numeric identifier on inner tag.', x: 75, y: 82 },
+    { category: 'FABRIC WEIGHT', label: 'MIDWEIGHT CONCEALMENT', desc: '320 GSM breathable dry touch cotton weave.', x: 60, y: 50 },
+    { category: 'CLASSIFICATION', label: 'CONCEALMENT SILHOUETTE', desc: 'Extended shoulder drop lines to distort body posture.', x: 20, y: 60 },
+    { category: 'CONDITION', label: 'DEGRADED', desc: 'Exhibits color depletion. Material integrity fully certified.', x: 52, y: 70 }
+  ],
+  '5': [
+    { category: 'SURFACE DAMAGE', label: 'INVERTED SEAM MARKS', desc: 'Raw edge seam lines exposed to display internal structural construction.', x: 30, y: 45 },
+    { category: 'INTERNAL MESSAGE', label: 'INTERNAL DENSITY', desc: 'Stitched label: "COLD EXTERIOR. DENSE CORE".', x: 50, y: 20 },
+    { category: 'ARCHIVE MARK', label: 'SYMBOLIC CODE', desc: 'Monochrome high-density seal near back neckline.', x: 80, y: 25 },
+    { category: 'FABRIC WEIGHT', label: 'SURVIVAL SHIELD', desc: '450 GSM structured French Terry fabric with high weave density.', x: 70, y: 60 },
+    { category: 'CLASSIFICATION', label: 'SURVIVAL WEIGHT STRUCTURE', desc: 'Substantial structural layer to provide physical boundaries.', x: 25, y: 70 },
+    { category: 'CONDITION', label: 'RECOVERED', desc: 'Secured unit. Restored to operational condition.', x: 50, y: 85 }
+  ],
+  '6': [
+    { category: 'SURFACE DAMAGE', label: 'MATTE OXIDIZED HARDWARE', desc: 'Oxidized black alloy metal components resistant to reflection.', x: 50, y: 35 },
+    { category: 'INTERNAL MESSAGE', label: 'PRESSURE RATED', desc: 'Stamping inside lining indicating certified stress tolerance.', x: 45, y: 55 },
+    { category: 'ARCHIVE MARK', label: 'ARCHIVE LABEL', desc: 'Woven identification label stitched on external compartment.', x: 75, y: 70 },
+    { category: 'FABRIC WEIGHT', label: 'WEATHER BARRIER', desc: 'High density technical nylon weave designed as a wind/fluid barrier.', x: 25, y: 45 },
+    { category: 'CLASSIFICATION', label: 'RESTRICTED OUTERWEAR SYSTEM', desc: 'Modular protection shell with quick access compartments.', x: 70, y: 25 },
+    { category: 'CONDITION', label: 'ACTIVE', desc: 'Operational status: fully functional. Level 2 exposure rating.', x: 52, y: 85 }
+  ],
+  '7': [
+    { category: 'SURFACE DAMAGE', label: 'UNFINED COLLAR EDGE', desc: 'Distressed neck binding and loose threads representing raw decay.', x: 50, y: 15 },
+    { category: 'INTERNAL MESSAGE', label: 'NO DECLARATION NEEDED', desc: 'Message print on inside front chest: "NO SIGNAL REQUIRED".', x: 48, y: 40 },
+    { category: 'ARCHIVE MARK', label: 'ACID WASH MARKS', desc: 'Corrosive finish resulting in random micro-tonal patterns.', x: 25, y: 60 },
+    { category: 'FABRIC WEIGHT', label: 'MID-WEIGHT JERSEY', desc: '240 GSM dry open-end cotton yarn offering breathable texture.', x: 75, y: 50 },
+    { category: 'CLASSIFICATION', label: 'BASE LAYER UNIFORM', desc: 'Essential base layer for low-visibility operations.', x: 30, y: 80 },
+    { category: 'CONDITION', label: 'RECOVERED', desc: 'Fully washed and catalogued. Wear patterns vary by unit.', x: 68, y: 78 }
+  ],
+  '8': [
+    { category: 'SURFACE DAMAGE', label: 'RAW SEAM BINDINGS', desc: 'Exposed flatlock stitching patterns highlighting garment anatomy.', x: 35, y: 55 },
+    { category: 'INTERNAL MESSAGE', label: 'ENDURING MATERIAL', desc: 'Interior tag stating "BUILT UNDER PRESSURE".', x: 50, y: 25 },
+    { category: 'ARCHIVE MARK', label: 'UNIT MARKER', desc: 'Stitched serial block patch positioned near side hem.', x: 80, y: 80 },
+    { category: 'FABRIC WEIGHT', label: 'DENSE JERSEY STRUCTURE', desc: '260 GSM compact-knit cotton built for daily wear cycles.', x: 65, y: 40 },
+    { category: 'CLASSIFICATION', label: 'UNREFINED EDGE LAYER', desc: 'Structural core garment with minimal external finishing.', x: 20, y: 70 },
+    { category: 'CONDITION', label: 'RECOVERED', desc: 'Stored at low temperature. Verified ready for usage.', x: 48, y: 88 }
+  ]
+};
+
 export default function Home() {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
@@ -35,6 +110,11 @@ export default function Home() {
   const [modalActive, setModalActive] = useState(false);
   const [activeProduct, setActiveProduct] = useState<any>(null);
   const [coords, setCoords] = useState({ x: '0.0000', y: '0.0000' });
+
+  // Object Inspection Mode State
+  const [inspectMode, setInspectMode] = useState(false);
+  const [activeHotspot, setActiveHotspot] = useState<number | null>(null);
+  const [lockedHotspot, setLockedHotspot] = useState<number | null>(null);
   
   // Mounted State to prevent Hydration errors
   const [mounted, setMounted] = useState(false);
@@ -464,6 +544,9 @@ export default function Home() {
       playClick(100, 0.2);
       return;
     }
+    setInspectMode(false);
+    setActiveHotspot(null);
+    setLockedHotspot(null);
     setActiveProduct(prod);
     setCoords({
       x: (Math.random() * 100).toFixed(4),
@@ -492,6 +575,9 @@ export default function Home() {
       document.body.style.overflow = 'auto';
     }, 800);
   };
+
+  const hotspots = activeProduct ? productInspectionData[activeProduct.id] : null;
+  const activeInfo = activeHotspot !== null ? hotspots?.[activeHotspot] : (lockedHotspot !== null ? hotspots?.[lockedHotspot] : null);
 
   return (
     <>
@@ -782,32 +868,128 @@ export default function Home() {
       </main>
 
       {/* Product Modal */}
-      <div id="product-modal" className={`modal ${modalActive ? 'active blueprint' : ''}`}>
+      <div id="product-modal" className={`modal ${modalActive ? 'active blueprint' : ''} ${inspectMode ? 'inspecting-active' : ''}`}>
         <div className="grid-overlay"></div>
         <div className="restricted-stamp">RESTRICTED_ARCHIVE</div>
         <div className="modal-close" onClick={() => { setModalActive(false); document.body.style.overflow = 'auto'; }}>SEAL ARCHIVE</div>
         {activeProduct && (
           <div className="product-detail-grid" style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{ position: 'relative' }}>
+            <div className={`product-detail-image-wrapper ${inspectMode ? 'inspecting' : ''}`} style={{ position: 'relative', overflow: 'hidden' }}>
               <img src={activeProduct.img} className="product-detail-image blueprint-image" alt={activeProduct.title} />
-              <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', fontSize: '0.5rem', opacity: 0.5 }}>
+              
+              <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', fontSize: '0.5rem', opacity: 0.5, zIndex: 5 }}>
                 COORD_X: {coords.x} <br />
                 COORD_Y: {coords.y}
               </div>
+
+              {/* Hotspot System */}
+              {inspectMode && hotspots && hotspots.map((hotspot, idx) => {
+                const isSelected = activeHotspot === idx || lockedHotspot === idx;
+                return (
+                  <button
+                    key={idx}
+                    className={`inspection-hotspot ${isSelected ? 'active' : ''}`}
+                    style={{
+                      position: 'absolute',
+                      left: `${hotspot.x}%`,
+                      top: `${hotspot.y}%`,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 10
+                    }}
+                    onMouseEnter={() => setActiveHotspot(idx)}
+                    onMouseLeave={() => setActiveHotspot(null)}
+                    onClick={() => setLockedHotspot(lockedHotspot === idx ? null : idx)}
+                    aria-label={`Inspect ${hotspot.category}`}
+                  >
+                    <span className="hotspot-ring"></span>
+                    <span className="hotspot-dot"></span>
+                    
+                    <div className={`hotspot-tooltip ${isSelected ? 'visible' : ''}`}>
+                      <span className="tooltip-category">{hotspot.category}</span>
+                      <span className="tooltip-label">{hotspot.label}</span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
+            
             <div className="product-detail-info">
               <p className="subtext" style={{ fontSize: '0.6rem', marginBottom: '1rem' }}>OBJECT RECORD // REF_{activeProduct.id}</p>
               <h2>{activeProduct.title}</h2>
-              <p style={{ opacity: 0.8 }}>{activeProduct.fullDesc}</p>
-              <ul className="product-specs">
-                {activeProduct.specs.map((spec: any, i: number) => (
-                  <li key={i} style={{ borderColor: 'rgba(0, 180, 216, 0.2)' }}>
-                    <span style={{ color: '#00b4d8' }}>{spec[0]}</span>
-                    <span>{spec[1]}</span>
-                  </li>
-                ))}
-              </ul>
-              <button className="buy-button" style={{ background: '#00b4d8', color: '#001d3d' }} onClick={acquireProduct}>ACQUIRE OBJECT — {activeProduct.meta}</button>
+              
+              {inspectMode ? (
+                <div className="object-inspection-panel fade-in">
+                  <div className="panel-header">
+                    <span>OBJECT RECORD: {activeProduct.title}</span>
+                    <span className="panel-status">INSPECT_ACTIVE</span>
+                  </div>
+                  <div className="panel-divider" />
+                  
+                  <div className="panel-body">
+                    {hotspots && hotspots.map((hotspot, i) => {
+                      const isSelected = activeHotspot === i || lockedHotspot === i;
+                      return (
+                        <div 
+                          key={i} 
+                          className={`panel-row ${isSelected ? 'active' : ''}`}
+                          onMouseEnter={() => setActiveHotspot(i)}
+                          onMouseLeave={() => setActiveHotspot(null)}
+                          onClick={() => setLockedHotspot(lockedHotspot === i ? null : i)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <span className="panel-row-category">{hotspot.category}</span>
+                          <span className="panel-row-label">{hotspot.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="panel-divider" />
+
+                  <div className="panel-details-zone">
+                    {activeInfo ? (
+                      <div className="active-info-block fade-in">
+                        <span className="info-category">{activeInfo.category}</span>
+                        <h4 className="info-label">{activeInfo.label}</h4>
+                        <p className="info-desc">{activeInfo.desc}</p>
+                      </div>
+                    ) : (
+                      <div className="info-placeholder">
+                        <p>SELECT OR HOVER HOTSPOT MARKERS ON THE OBJECT FOR DETAILED ARCHIVE RECORDS.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p style={{ opacity: 0.8 }}>{activeProduct.fullDesc}</p>
+                  <ul className="product-specs">
+                    {activeProduct.specs.map((spec: any, i: number) => (
+                      <li key={i} style={{ borderColor: 'rgba(0, 180, 216, 0.2)' }}>
+                        <span style={{ color: '#00b4d8' }}>{spec[0]}</span>
+                        <span>{spec[1]}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              <div className="product-modal-actions" style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <button 
+                  className={`inspection-toggle-btn ${inspectMode ? 'active' : ''}`}
+                  onClick={() => {
+                    setInspectMode(!inspectMode);
+                    setActiveHotspot(null);
+                    setLockedHotspot(null);
+                  }}
+                >
+                  {inspectMode ? 'SEAL INSPECTION' : 'INSPECT OBJECT'}
+                </button>
+                
+                <button className="buy-button" style={{ background: '#00b4d8', color: '#001d3d' }} onClick={acquireProduct}>
+                  ACQUIRE OBJECT — {activeProduct.meta}
+                </button>
+              </div>
             </div>
           </div>
         )}
