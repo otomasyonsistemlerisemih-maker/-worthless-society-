@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-  --bg: #0A0A0A;
-  --surface: #111111;
-  --accent: #2A2A2A;
-  --text-main: #E8E8E8;
-  --text-muted: #888888;
+  --bg: #050505;          /* Deepest washed black */
+  --surface: #0D0D0D;     /* Dark luxury concrete / charcoal */
+  --accent: #1A1A1A;      /* Oxidized concrete */
+  --text-main: #D5D5D5;    /* Faded dust tones / low contrast highlight */
+  --text-muted: #6E6E6E;   /* Aged document faded ink */
   --font-heading: 'Inter Tight', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
