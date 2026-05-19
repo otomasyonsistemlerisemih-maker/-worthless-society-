@@ -585,8 +585,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     switch (section) {
       case 'home':
         // Hero: Deeper drone, more quiet room tone, lower feedback (heavy pressure)
-        if (droneFilter) droneFilter.frequency.setTargetAtTime(75, now, transitionTime);
-        if (roomGain) roomGain.gain.setTargetAtTime(0.02, now, transitionTime);
+        if (droneFilter) droneFilter.frequency.setTargetAtTime(90, now, transitionTime);
+        if (roomGain) roomGain.gain.setTargetAtTime(0.6, now, transitionTime);
         if (airFilter) airFilter.frequency.setTargetAtTime(220, now, transitionTime);
         if (metallicFeedback) metallicFeedback.gain.setTargetAtTime(0.25, now, transitionTime);
         if (sectionGain) sectionGain.gain.setTargetAtTime(0.85, now, transitionTime);
@@ -594,8 +594,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       case 'shop':
         // Product Grid: Slightly higher drone frequency, louder room ventilation, active resonances
-        if (droneFilter) droneFilter.frequency.setTargetAtTime(110, now, transitionTime);
-        if (roomGain) roomGain.gain.setTargetAtTime(0.08, now, transitionTime);
+        if (droneFilter) droneFilter.frequency.setTargetAtTime(130, now, transitionTime);
+        if (roomGain) roomGain.gain.setTargetAtTime(1.8, now, transitionTime);
         if (airFilter) airFilter.frequency.setTargetAtTime(320, now, transitionTime);
         if (metallicFeedback) metallicFeedback.gain.setTargetAtTime(0.55, now, transitionTime);
         if (sectionGain) sectionGain.gain.setTargetAtTime(1.1, now, transitionTime);
@@ -603,8 +603,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       case 'manifesto':
         // Manifesto: Deeper drone, maximum air current ventilation and pressure
-        if (droneFilter) droneFilter.frequency.setTargetAtTime(60, now, transitionTime);
-        if (roomGain) roomGain.gain.setTargetAtTime(0.09, now, transitionTime);
+        if (droneFilter) droneFilter.frequency.setTargetAtTime(80, now, transitionTime);
+        if (roomGain) roomGain.gain.setTargetAtTime(2.0, now, transitionTime);
         if (airFilter) airFilter.frequency.setTargetAtTime(260, now, transitionTime);
         if (metallicFeedback) metallicFeedback.gain.setTargetAtTime(0.35, now, transitionTime);
         if (sectionGain) sectionGain.gain.setTargetAtTime(1.2, now, transitionTime);
@@ -613,8 +613,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       case 'network':
       case 'campaign':
         // Standard industrial ambient level
-        if (droneFilter) droneFilter.frequency.setTargetAtTime(95, now, transitionTime);
-        if (roomGain) roomGain.gain.setTargetAtTime(0.05, now, transitionTime);
+        if (droneFilter) droneFilter.frequency.setTargetAtTime(110, now, transitionTime);
+        if (roomGain) roomGain.gain.setTargetAtTime(1.4, now, transitionTime);
         if (airFilter) airFilter.frequency.setTargetAtTime(280, now, transitionTime);
         if (metallicFeedback) metallicFeedback.gain.setTargetAtTime(0.48, now, transitionTime);
         if (sectionGain) sectionGain.gain.setTargetAtTime(1.0, now, transitionTime);
@@ -622,8 +622,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       case 'footer':
         // Footer: Thin, cold fading atmosphere, lower volume
-        if (droneFilter) droneFilter.frequency.setTargetAtTime(55, now, transitionTime);
-        if (roomGain) roomGain.gain.setTargetAtTime(0.015, now, transitionTime);
+        if (droneFilter) droneFilter.frequency.setTargetAtTime(80, now, transitionTime);
+        if (roomGain) roomGain.gain.setTargetAtTime(0.35, now, transitionTime);
         if (airFilter) airFilter.frequency.setTargetAtTime(150, now, transitionTime);
         if (metallicFeedback) metallicFeedback.gain.setTargetAtTime(0.15, now, transitionTime);
         if (sectionGain) sectionGain.gain.setTargetAtTime(0.45, now, transitionTime);
