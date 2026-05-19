@@ -691,39 +691,91 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Campaign Section */}
+        {/* Recovered Films Section */}
         <section id="campaign" className="campaign">
           <div className="container">
-            <h2 className="fade-in">VISUAL RECORDS</h2>
+
+            {/* Section identity */}
+            <div className="fade-in recovered-films-header">
+              <span className="subtext recovered-films-label">Visual Archive</span>
+              <h2 className="recovered-films-heading">RECOVERED FILMS</h2>
+              <p className="recovered-films-body">
+                Fragments recovered from the WORTHLESS archive.
+              </p>
+            </div>
+
             <div className="video-grid">
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">RECORD_01</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_001</span>
+                  <span className="video-overlay-title">VOID STATE</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export2.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">RECORD_02</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_002</span>
+                  <span className="video-overlay-title">SILENT STRUCTURE</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/worthless yelek.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">YELEK_ARCHIVE</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_003</span>
+                  <span className="video-overlay-title">ARCHIVE UNIT</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/absent).mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">ABSENT_STATE</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_004</span>
+                  <span className="video-overlay-title">ABSENT STATE</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export grikesik.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">GREY_CUT</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_005</span>
+                  <span className="video-overlay-title">GREY CUT</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in"
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/storyline_export3.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">RECORD_04</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_006</span>
+                  <span className="video-overlay-title">PRESSURE SEQUENCE</span>
+                </div>
               </div>
-              <div className="video-wrapper fade-in" style={{ gridColumn: '1 / -1' }} onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }} onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
+
+              <div className="video-wrapper fade-in" style={{ gridColumn: '1 / -1' }}
+                onMouseEnter={() => { cursorRef.current?.classList.add('hidden'); followerRef.current?.classList.add('watch-active'); playClick(1200, 0.05); }}
+                onMouseLeave={() => { cursorRef.current?.classList.remove('hidden'); followerRef.current?.classList.remove('watch-active'); }}>
                 <video src="/assets/sonvideo4.mp4" autoPlay loop muted playsInline></video>
-                <div className="video-overlay">THE FINAL RECORD</div>
+                <div className="video-overlay">
+                  <span className="video-overlay-ref">RECORD_007</span>
+                  <span className="video-overlay-title">FINAL VOID</span>
+                </div>
               </div>
+
             </div>
           </div>
         </section>

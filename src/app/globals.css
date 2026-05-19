@@ -332,9 +332,34 @@ section {
   }
 }
 
-/* Campaign Videos */
+/* Recovered Films Section */
 .campaign {
   background-color: transparent;
+}
+
+.recovered-films-header {
+  margin-bottom: 0;
+}
+
+.recovered-films-label {
+  display: block;
+  margin-bottom: 1.25rem;
+  opacity: 0.4;
+}
+
+.recovered-films-heading {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.recovered-films-body {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  max-width: 420px;
 }
 
 .video-grid {
@@ -382,12 +407,28 @@ section {
   position: absolute;
   bottom: 1.5rem;
   left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 2;
+}
+
+.video-overlay-ref {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.video-overlay-title {
   font-family: var(--font-heading);
   text-transform: uppercase;
   font-size: 0.8rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   color: var(--text-main);
-  z-index: 2;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
@@ -450,7 +491,7 @@ section {
 }
 
 .cursor-follower.watch-active::after {
-  content: "WATCH";
+  content: "VIEW";
   font-family: var(--font-heading);
   font-weight: 900;
   font-size: 0.75rem;
