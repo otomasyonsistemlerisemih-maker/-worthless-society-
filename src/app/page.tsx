@@ -8,6 +8,7 @@ import InteractiveHUD from '@/components/InteractiveHUD';
 import GlobalNetworkMap from '@/components/GlobalNetworkMap';
 import NetworkAccessForm from '@/components/NetworkAccessForm';
 import { useAudio } from '@/context/AudioContext';
+import EnterArchiveIntro from '@/components/EnterArchiveIntro';
 
 interface InspectionHotspot {
   category: string;
@@ -89,6 +90,7 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(true);
+  const [introActive, setIntroActive] = useState(false);
   
   // Terminal state
   const [terminalActive, setTerminalActive] = useState(false);
@@ -190,11 +192,15 @@ export default function Home() {
 
   const handleEnter = () => {
     setLoading(true); // visually hide button
-    setTimeout(() => {
-      setShowPreloader(false);
-      document.body.style.overflow = 'auto';
-    }, 1200);
     startAudio();
+    setTimeout(() => {
+      setIntroActive(true);
+    }, 1200);
+  };
+
+  const handleIntroComplete = () => {
+    setShowPreloader(false);
+    document.body.style.overflow = 'auto';
   };
 
   // Section observer to subtly respond to scrolling sections
@@ -581,6 +587,7 @@ export default function Home() {
 
   return (
     <>
+      <EnterArchiveIntro isActive={introActive} onComplete={handleIntroComplete} />
       {/* Custom Cursor */}
       <div ref={cursorRef} className="cursor" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
       <div ref={followerRef} className="cursor-follower" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
