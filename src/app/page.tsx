@@ -8,7 +8,6 @@ import InteractiveHUD from '@/components/InteractiveHUD';
 import GlobalNetworkMap from '@/components/GlobalNetworkMap';
 import NetworkAccessForm from '@/components/NetworkAccessForm';
 import { useAudio } from '@/context/AudioContext';
-import EnterArchiveIntro from '@/components/EnterArchiveIntro';
 
 interface InspectionHotspot {
   category: string;
@@ -90,7 +89,6 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(true);
-  const [introActive, setIntroActive] = useState(false);
   
   // Terminal state
   const [terminalActive, setTerminalActive] = useState(false);
@@ -194,13 +192,9 @@ export default function Home() {
     setLoading(true); // visually hide button
     startAudio();
     setTimeout(() => {
-      setIntroActive(true);
+      setShowPreloader(false);
+      document.body.style.overflow = 'auto';
     }, 1200);
-  };
-
-  const handleIntroComplete = () => {
-    setShowPreloader(false);
-    document.body.style.overflow = 'auto';
   };
 
   // Section observer to subtly respond to scrolling sections
@@ -304,6 +298,7 @@ export default function Home() {
 
     // Three.js
     if (!canvasRef.current) return;
+    if (showPreloader) return; // Defer heavy Three.js init until after preloader to prevent video lag
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x0a0a0a, 0.02);
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -587,7 +582,6 @@ export default function Home() {
 
   return (
     <>
-      <EnterArchiveIntro isActive={introActive} onComplete={handleIntroComplete} />
       {/* Custom Cursor */}
       <div ref={cursorRef} className="cursor" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
       <div ref={followerRef} className="cursor-follower" style={{ display: (terminalActive || thermalMode) ? 'none' : 'block' }}></div>
@@ -610,6 +604,15 @@ export default function Home() {
 
       {/* Preloader */}
       <div id="preloader" className={!showPreloader ? 'hide' : ''} style={{ display: showPreloader ? 'flex' : 'none' }}>
+        <video 
+          className="preloader-video"
+          src="/videos/enter-archive.mp4"
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          preload="auto"
+        />
         <div className="preloader-content">
           <div className="glitch-text" data-text="WORTHLESS">WORTHLESS</div>
           {!loading ? (
