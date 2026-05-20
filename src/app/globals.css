@@ -762,6 +762,38 @@ section {
   pointer-events: none;
 }
 
+/* Preloader Sound Toggle */
+.preloader-sound-btn {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.4s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.preloader-sound-btn:hover {
+  opacity: 0.85;
+}
+
+.preloader-sound-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 /* Secret Room / Terminal */
 #secret-trigger {
   color: inherit;
